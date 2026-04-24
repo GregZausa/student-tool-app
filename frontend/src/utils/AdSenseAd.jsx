@@ -1,16 +1,44 @@
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const AdSenseAd = () => {
+  const [showAd, setShowAd] = useState(false);
+  const containerRef = useRef(null);
+  const pushed = useRef(false);
+
   useEffect(() => {
-    try {
-      (window.adsbygoogle = window.adsbygoogle || []).push({});
-    } catch (err) {
-      console.log("AdSense error:", err);
-    }
+    const timer = setTimeout(() => setShowAd(true), 10000);
+    return () => clearTimeout(timer);
   }, []);
 
+  useEffect(() => {
+    if (!showAd || pushed.current) return;
+
+    const el = containerRef.current;
+    if (!el) return;
+
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const width = entry.contentRect.width;
+        if (width > 0 && !pushed.current) {
+          pushed.current = true;
+          observer.disconnect();
+          try {
+            (window.adsbygoogle = window.adsbygoogle || []).push({});
+          } catch (err) {
+            console.log("AdSense error:", err);
+          }
+        }
+      }
+    });
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [showAd]);
+
+  if (!showAd) return null;
+
   return (
-    <div className="my-6 flex justify-center">
+    <div ref={containerRef} className="my-6 flex justify-center min-h-25">
       <ins
         className="adsbygoogle"
         style={{ display: "block" }}
