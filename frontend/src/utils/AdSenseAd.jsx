@@ -38,15 +38,17 @@ const AdSenseAd = () => {
   if (!showAd) return null;
 
   return (
-    <div ref={containerRef} className="my-6 flex justify-center min-h-25">
-      <ins
-        className="adsbygoogle"
-        style={{ display: "block" }}
-        data-ad-client="ca-pub-7820681080990556"
-        data-ad-slot="4392732261"
-        data-ad-format="auto"
-        data-full-width-responsive="true"
-      />
+    <div ref={containerRef} className="my-6 w-full flex min-h-25">
+      <div className="w-full max-w-2xl mx-auto">
+        <ins
+          className="adsbygoogle"
+          style={{ display: "block", width: "100%" }}
+          data-ad-client="ca-pub-7820681080990556"
+          data-ad-slot="4392732261"
+          data-ad-format="auto"
+          data-full-width-responsive="true"
+        />
+      </div>
     </div>
   );
 };

@@ -165,7 +165,6 @@ const GPACalculator = () => {
       />
 
       <div className="max-w-2xl mx-auto px-4 pb-16">
-        <AdSenseAd />
 
         <div className="flex gap-1 bg-slate-100 rounded-xl p-1 mt-5 mb-4">
           {semesters.map((sem, i) => (
