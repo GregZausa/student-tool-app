@@ -6,8 +6,6 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center px-4">
       <div className="max-w-2xl w-full">
-        
-        {/* Header */}
         <div className="text-center mb-10">
           <h1 className="text-4xl font-bold tracking-tight">
             Student Tools Hub
@@ -15,10 +13,8 @@ const Home = () => {
           <p className="text-slate-400 mt-3">
             Free calculators and learning tools for students.
           </p>
-          <AdSenseAd />
         </div>
 
-        {/* Tools Grid */}
         <div className="grid gap-4">
           <Link
             to="/gpa-calculator"
@@ -39,7 +35,7 @@ const Home = () => {
             </div>
           </Link>
         </div>
-
+        <AdSenseAd />
       </div>
     </div>
   );

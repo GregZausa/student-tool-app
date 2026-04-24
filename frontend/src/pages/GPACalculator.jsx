@@ -1,11 +1,409 @@
-import React from 'react'
+import { useState, useEffect, useCallback } from "react";
+import AdSenseAd from "../utils/AdSenseAd";
+import {
+  GRADE_LABELS,
+  GRADE_OPTIONS,
+  GRADE_SELECT_OPTIONS,
+  gradeTableRows,
+} from "../utils/constants/grade-config";
+import { getRemarks, REMARKS_CONFIG } from "../utils/constants/remarks-config";
+import FloatingLabelInput from "../components/FloatingLabelInput";
+import SelectBox from "../components/SelectBox";
+import StatCard from "../components/cards/StatCard";
+import Button from "../components/Button";
+import Header from "../components/layout/Header";
+import { GraduationCap } from "lucide-react";
 
-const GPACalculator = () => {
-  return (
-    <div>
-      
-    </div>
-  )
+function getBarWidth(gwa) {
+  if (!gwa) return 0;
+  return Math.max(0, Math.min(100, ((5.0 - gwa) / 4.0) * 100));
 }
 
-export default GPACalculator
+function getBarColor(gwa) {
+  if (gwa <= 1.5) return "bg-green-600";
+  if (gwa <= 2.5) return "bg-amber-500";
+  if (gwa <= 3.0) return "bg-orange-500";
+  return "bg-red-500";
+}
+
+let idCounter = 0;
+const uid = () => ++idCounter;
+
+const SubjectRow = ({ row, onChange, onDelete, index }) => (
+  <div className="grid grid-cols-[2fr_90px_175px_36px] gap-2 items-start py-2 border-b border-slate-100 last:border-0 animate-[fadeSlideIn_0.2s_ease]">
+    <FloatingLabelInput
+      type="text"
+      label={`Subject ${index + 1}`}
+      value={row.subject}
+      onChange={(val) => onChange(row.id, "subject", val)}
+    />
+
+    <FloatingLabelInput
+      type="number"
+      label="Units"
+      min={1}
+      max={6}
+      step={0.5}
+      value={row.units}
+      onChange={(val) => onChange(row.id, "units", val)}
+    />
+
+    <SelectBox
+      options={GRADE_SELECT_OPTIONS}
+      value={row.grade}
+      onChange={(val) => onChange(row.id, "grade", val)}
+      placeholder="— Grade —"
+      searchable={false}
+    />
+
+    <Button onClick={() => onDelete(row.id)} label="x" />
+  </div>
+);
+const SemesterTab = ({ label, active, onClick }) => (
+  <button
+    onClick={onClick}
+    className={`flex-1 px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap cursor-pointer ${
+      active
+        ? "bg-slate-800 text-slate-100 shadow-sm"
+        : "bg-transparent text-slate-500 hover:text-slate-700 hover:bg-white"
+    }`}
+  >
+    {label}
+  </button>
+);
+const GPACalculator = () => {
+  const [activeSem, setActiveSem] = useState(0);
+  const [semesters, setSemesters] = useState([
+    { label: "1st Sem", rows: [] },
+    { label: "2nd Sem", rows: [] },
+    { label: "Summer", rows: [] },
+  ]);
+  const [copied, setCopied] = useState(false);
+  const [showTip, setShowTip] = useState(false);
+
+  useEffect(() => {
+    const t = setTimeout(() => setShowTip(true), 20000);
+    return () => clearTimeout(t);
+  }, []);
+
+  const currentRows = semesters[activeSem].rows;
+
+  const updateRows = useCallback(
+    (updater) => {
+      setSemesters((prev) =>
+        prev.map((sem, i) =>
+          i === activeSem ? { ...sem, rows: updater(sem.rows) } : sem,
+        ),
+      );
+    },
+    [activeSem],
+  );
+
+  const addRow = () =>
+    updateRows((rows) => [
+      ...rows,
+      { id: uid(), subject: "", units: "3", grade: "" },
+    ]);
+
+  const deleteRow = (id) =>
+    updateRows((rows) => rows.filter((r) => r.id !== id));
+
+  const changeRow = (id, field, val) =>
+    updateRows((rows) =>
+      rows.map((r) => (r.id === id ? { ...r, [field]: val } : r)),
+    );
+
+  const resetSem = () => updateRows(() => []);
+
+  const compute = (rows) => {
+    let totalPts = 0,
+      totalUnits = 0,
+      hasInc = false;
+    rows.forEach(({ grade, units }) => {
+      const u = parseFloat(units);
+      if (!grade || !u || isNaN(u)) return;
+      if (grade === "INC") {
+        hasInc = true;
+        return;
+      }
+      const g = parseFloat(grade);
+      if (isNaN(g)) return;
+      totalPts += g * u;
+      totalUnits += u;
+    });
+    const gwa = totalUnits > 0 ? totalPts / totalUnits : null;
+    return { gwa, totalUnits, hasInc };
+  };
+
+  const { gwa, totalUnits, hasInc } = compute(currentRows);
+  const allRows = semesters.flatMap((s) => s.rows);
+  const { gwa: cumGwa } = compute(allRows);
+
+  const remarks = gwa !== null ? getRemarks(gwa, hasInc) : null;
+  const barWidth = gwa !== null ? getBarWidth(gwa) : 0;
+  const barColorClass = gwa !== null ? getBarColor(gwa) : "bg-slate-200";
+
+  const copyResult = () => {
+    const link = "https://student-tool-app.vercel.app/gpa-calculator";
+    const text =
+      gwa !== null
+        ? `My GWA this semester: ${gwa.toFixed(2)} (${remarks?.label}) — computed using PH GPA Calculator: ${link}`
+        : `Check my GWA at PH GPA Calculator: ${link}`;
+
+    navigator.clipboard?.writeText(text).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  };
+
+  return (
+    <div className="min-h-screen bg-slate-50 font-sans">
+      <Header
+        header="PH GPA CALCULATOR"
+        subHeader="Philippine grading system · 1.0 (Excellent) to 5.0 (Failed)"
+        icon={<GraduationCap size={20}/>}
+      />
+
+      <div className="max-w-2xl mx-auto px-4 pb-16">
+        <AdSenseAd />
+
+        <div className="flex gap-1 bg-slate-100 rounded-xl p-1 mt-5 mb-4">
+          {semesters.map((sem, i) => (
+            <SemesterTab
+              key={i}
+              label={sem.label}
+              active={activeSem === i}
+              onClick={() => setActiveSem(i)}
+            />
+          ))}
+        </div>
+
+        <div className="grid grid-cols-3 gap-2.5 mb-5">
+          <StatCard
+            label="Sem GWA"
+            value={gwa !== null ? gwa.toFixed(2) : "—"}
+            color="text-indigo-500"
+          />
+          <StatCard
+            label="Sem units"
+            value={
+              totalUnits > 0
+                ? totalUnits % 1 === 0
+                  ? totalUnits
+                  : totalUnits.toFixed(1)
+                : "0"
+            }
+            color="text-sky-500"
+          />
+          <StatCard
+            label="Cumulative GWA"
+            value={cumGwa !== null ? cumGwa.toFixed(2) : "—"}
+            color="text-emerald-500"
+          />
+        </div>
+
+        {remarks && (
+          <div
+            className="flex items-center gap-3 px-4 py-3 rounded-2xl border mb-4 animate-[fadeSlideIn_0.3s_ease]"
+            style={{ background: remarks.bg, borderColor: remarks.border }}
+          >
+            <span className="text-xl">
+              {remarks.label.includes("Laude")
+                ? "🏆"
+                : remarks.label === "Failed"
+                  ? "📋"
+                  : remarks.label === "Incomplete"
+                    ? "⏳"
+                    : "✅"}
+            </span>
+            <div>
+              <div
+                className="font-semibold text-sm"
+                style={{ color: remarks.color }}
+              >
+                {remarks.label}
+              </div>
+              <div
+                className="text-xs opacity-75"
+                style={{ color: remarks.color }}
+              >
+                {gwa !== null ? `GWA: ${gwa.toFixed(4)}` : ""}
+              </div>
+            </div>
+          </div>
+        )}
+
+        <div className="mb-5">
+          <div className="flex justify-between text-xs text-slate-400 mb-1.5">
+            <span>Performance meter</span>
+            <span className="font-mono font-medium">
+              {gwa !== null ? `${barWidth.toFixed(0)}%` : "—"}
+            </span>
+          </div>
+          <div className="h-2.5 bg-slate-200 rounded-full overflow-hidden">
+            <div
+              className={`h-full rounded-full transition-all duration-500 ${barColorClass}`}
+              style={{ width: `${barWidth}%` }}
+            />
+          </div>
+          <div className="flex justify-between text-[10px] text-slate-300 mt-1">
+            <span>5.0 Failed</span>
+            <span>3.0 Passing</span>
+            <span>1.0 Excellent</span>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-2xl border border-slate-200 p-4 mb-3">
+          <div className="grid grid-cols-[2fr_90px_175px_36px] gap-2 mb-2">
+            {["Subject / Course", "Units", "Grade", ""].map((h, i) => (
+              <div
+                key={i}
+                className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider"
+              >
+                {h}
+              </div>
+            ))}
+          </div>
+
+          {currentRows.length === 0 ? (
+            <div className="text-center py-8 text-slate-300">
+              <div className="text-3xl mb-2">📚</div>
+              <div className="text-sm">No subjects yet. Add one below!</div>
+            </div>
+          ) : (
+            currentRows.map((row, i) => (
+              <SubjectRow
+                key={row.id}
+                row={row}
+                index={i}
+                onChange={changeRow}
+                onDelete={deleteRow}
+              />
+            ))
+          )}
+        </div>
+
+        <div className="flex justify-between gap-2 mb-5 flex-wrap">
+          <div className="flex justify-between">
+            <Button onClick={addRow} label="+ Add subject" />
+            <Button
+              onClick={copyResult}
+              label={copied ? "✓ Copied!" : "📋 Share result"}
+              variant="ghost"
+            />
+          </div>
+          <div className="justify-end">
+            <Button
+              onClick={resetSem}
+              label="Reset sem"
+              variant="ghostDanger"
+            />
+          </div>
+        </div>
+
+        <AdSenseAd />
+
+        <div className="bg-white rounded-2xl border border-slate-200 p-4 mb-4">
+          <h3 className="text-sm font-semibold text-slate-800 mb-3">
+            📊 PH grading scale reference
+          </h3>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="bg-slate-50">
+                  {["Grade", "Description", "% Equivalent", "Remarks"].map(
+                    (h) => (
+                      <th
+                        key={h}
+                        className="px-2.5 py-2 text-left text-[10px] text-slate-500 font-semibold uppercase tracking-wider border-b border-slate-200"
+                      >
+                        {h}
+                      </th>
+                    ),
+                  )}
+                </tr>
+              </thead>
+              <tbody>
+                {gradeTableRows.map(([g, desc, pct, rmk], i) => (
+                  <tr
+                    key={g}
+                    className={i % 2 === 0 ? "bg-white" : "bg-slate-50/50"}
+                  >
+                    <td
+                      className={`px-2.5 py-2 font-mono font-semibold ${
+                        parseFloat(g) <= 2.0
+                          ? "text-green-600"
+                          : parseFloat(g) <= 3.0
+                            ? "text-amber-600"
+                            : "text-red-500"
+                      }`}
+                    >
+                      {g}
+                    </td>
+                    <td className="px-2.5 py-2 text-slate-700">{desc}</td>
+                    <td className="px-2.5 py-2 text-slate-500">{pct}</td>
+                    <td className="px-2.5 py-2 text-slate-500">{rmk}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div className="bg-amber-50 rounded-2xl border border-amber-200 p-4 mb-4">
+          <h3 className="text-sm font-semibold text-amber-800 mb-2.5">
+            💡 Tips para mapabuti ang GWA mo
+          </h3>
+          <ul className="list-disc pl-4 text-xs text-amber-700 space-y-1.5 leading-relaxed">
+            <li>
+              Unahin ang mga subject na may malaking units — mas malaki ang
+              impact sa GWA.
+            </li>
+            <li>
+              Kahit 1.75 lang sa major subject, malaking tulong na sa overall
+              average.
+            </li>
+            <li>
+              Gamitin ang <strong>Summer sem</strong> tab para makita ang
+              cumulative GWA mo.
+            </li>
+            <li>
+              Ang 3.0 ang minimum passing grade sa karamihang PH universities.
+            </li>
+            <li>
+              INC grades ay hindi kasama sa GWA hanggang hindi pa nare-resolve.
+            </li>
+          </ul>
+        </div>
+
+        {showTip && (
+          <div className="bg-blue-50 rounded-2xl border border-blue-200 p-4 mb-4 flex items-center gap-3 animate-[fadeSlideIn_0.4s_ease]">
+            <span className="text-xl">🔗</span>
+            <div className="flex-1">
+              <div className="text-sm font-semibold text-blue-800">
+                Ibahagi ang iyong result!
+              </div>
+              <div className="text-xs text-blue-500">
+                I-share ang iyong GWA sa mga kaklase mo.
+              </div>
+            </div>
+            <button
+              onClick={copyResult}
+              className="px-3.5 py-2 rounded-xl bg-blue-500 text-white text-xs font-semibold hover:bg-blue-600 transition-colors cursor-pointer"
+            >
+              {copied ? "Copied!" : "Copy"}
+            </button>
+          </div>
+        )}
+
+        <AdSenseAd />
+
+        <p className="text-center text-[11px] text-slate-300 mt-5">
+          PH GPA Calculator · For Filipino students 🇵🇭
+        </p>
+      </div>
+    </div>
+  );
+};
+
+export default GPACalculator;
