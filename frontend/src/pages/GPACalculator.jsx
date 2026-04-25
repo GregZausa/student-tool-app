@@ -12,7 +12,9 @@ import SelectBox from "../components/SelectBox";
 import StatCard from "../components/cards/StatCard";
 import Button from "../components/Button";
 import Header from "../components/layout/Header";
-import { GraduationCap } from "lucide-react";
+import { GraduationCap, Lightbulb } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import TipBox from "../components/TipBox";
 
 function getBarWidth(gwa) {
   if (!gwa) return 0;
@@ -72,6 +74,11 @@ const SemesterTab = ({ label, active, onClick }) => (
   </button>
 );
 const GPACalculator = () => {
+  const navigate = useNavigate();
+
+  const backtoHome = () => {
+    navigate("/");
+  };
   const [activeSem, setActiveSem] = useState(0);
   const [semesters, setSemesters] = useState([
     { label: "1st Sem", rows: [] },
@@ -147,8 +154,8 @@ const GPACalculator = () => {
     const link = "https://student-tool-app.vercel.app/gpa-calculator";
     const text =
       gwa !== null
-        ? `My GWA this semester: ${gwa.toFixed(2)} (${remarks?.label}) — computed using PH GPA Calculator: ${link}`
-        : `Check my GWA at PH GPA Calculator: ${link}`;
+        ? `My GWA this semester: ${gwa.toFixed(2)} (${remarks?.label}) — Compute yours here: ${link}`
+        : `Check you GWA here: ${link}`;
 
     navigator.clipboard?.writeText(text).then(() => {
       setCopied(true);
@@ -161,11 +168,11 @@ const GPACalculator = () => {
       <Header
         header="PH GPA CALCULATOR"
         subHeader="Philippine grading system · 1.0 (Excellent) to 5.0 (Failed)"
-        icon={<GraduationCap size={20}/>}
+        icon={GraduationCap}
+        onClick={() => backtoHome()}
       />
 
       <div className="max-w-2xl mx-auto px-4 pb-16">
-
         <div className="flex gap-1 bg-slate-100 rounded-xl p-1 mt-5 mb-4">
           {semesters.map((sem, i) => (
             <SemesterTab
@@ -348,32 +355,32 @@ const GPACalculator = () => {
             </table>
           </div>
         </div>
-
-        <div className="bg-amber-50 rounded-2xl border border-amber-200 p-4 mb-4">
-          <h3 className="text-sm font-semibold text-amber-800 mb-2.5">
-            💡 Tips para mapabuti ang GWA mo
-          </h3>
-          <ul className="list-disc pl-4 text-xs text-amber-700 space-y-1.5 leading-relaxed">
-            <li>
-              Unahin ang mga subject na may malaking units — mas malaki ang
-              impact sa GWA.
-            </li>
-            <li>
-              Kahit 1.75 lang sa major subject, malaking tulong na sa overall
-              average.
-            </li>
-            <li>
-              Gamitin ang <strong>Summer sem</strong> tab para makita ang
-              cumulative GWA mo.
-            </li>
-            <li>
-              Ang 3.0 ang minimum passing grade sa karamihang PH universities.
-            </li>
-            <li>
-              INC grades ay hindi kasama sa GWA hanggang hindi pa nare-resolve.
-            </li>
-          </ul>
-        </div>
+        <TipBox
+          title="Tips para mapabuti ang GWA mo"
+          icon={Lightbulb}
+          tips={[
+            <>
+              Unahin ang mga subject na may malaking units—sila ang may
+              pinakamalaking epekto sa GWA mo.
+            </>,
+            <>
+              Kahit maliit na improvement (hal. 2.0 → 1.75) sa major subject,
+              malaking boost na agad sa overall average.
+            </>,
+            <>
+              Gamitin ang <strong>Summer sem</strong> para makita kung paano mo
+              pa pwedeng iangat ang cumulative GWA.
+            </>,
+            <>
+              Targetin ang grades na mas mataas sa passing—huwag lang pumasa,
+              aim higher.
+            </>,
+            <>
+              Ayusin agad ang INC grades—hindi sila kasama ngayon, pero bababa
+              ang GWA mo once ma-resolve.
+            </>,
+          ]}
+        />
 
         {showTip && (
           <div className="bg-blue-50 rounded-2xl border border-blue-200 p-4 mb-4 flex items-center gap-3 animate-[fadeSlideIn_0.4s_ease]">

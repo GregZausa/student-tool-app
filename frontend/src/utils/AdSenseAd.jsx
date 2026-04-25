@@ -6,7 +6,7 @@ const AdSenseAd = () => {
   const pushed = useRef(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setShowAd(true), 10000);
+    const timer = setTimeout(() => setShowAd(true), 5000);
     return () => clearTimeout(timer);
   }, []);
 

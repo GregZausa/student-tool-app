@@ -1,10 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import AdSenseAd from "../utils/AdSenseAd";
+import { Calculator, Timer } from "lucide-react";
+import RouteComponent from "../routes/RouteComponent";
 
 const Home = () => {
   return (
-    <div className="min-h-screen bg-slate-950 text-white px-4 py-10">
+    <div className="min-h-screen bg-linear-to-br from-slate-950 via-slate-800 to-slate-950 text-white px-4 py-10 z-10">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-12">
           <h1 className="text-5xl font-bold tracking-tight mb-3">
@@ -15,24 +17,18 @@ const Home = () => {
           </p>
         </div>
 
-        <div className="mb-10">
-          <Link
-            to="/gpa-calculator"
-            className="block p-6 rounded-2xl border border-slate-800 bg-slate-900 hover:bg-slate-800 transition shadow-lg"
-          >
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xl font-semibold text-indigo-400">
-                  📊 GPA Calculator
-                </p>
-                <p className="text-sm text-slate-400 mt-1">
-                  Compute your GWA instantly using the PH grading system
-                </p>
-              </div>
-              <span className="text-2xl">→</span>
-            </div>
-          </Link>
-        </div>
+        <RouteComponent
+          link="/gpa-calculator"
+          icon={Calculator}
+          title="GPA Calculator"
+          desc="Check your GPA in seconds—no manual computation"
+        />
+        <RouteComponent
+          link="/pomodoro-timer"
+          icon={Timer}
+          title="Pomodoro Timer"
+          desc="Stop procrastinating. Start a 25-minute focus sprint"
+        />
 
         <div className="grid grid-cols-3 gap-4 text-center mb-12">
           <div>
@@ -41,7 +37,9 @@ const Home = () => {
           </div>
           <div>
             <p className="text-xl font-bold">🎯 Accurate</p>
-            <p className="text-xs text-slate-400">Built for real student needs</p>
+            <p className="text-xs text-slate-400">
+              Built for real student needs
+            </p>
           </div>
           <div>
             <p className="text-xl font-bold">🆓 Free</p>

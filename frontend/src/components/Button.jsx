@@ -7,7 +7,7 @@ const Button = ({
   disabled = false,
   className = "",
   type = "button",
-  icon,
+  icon: Icon,
   loading = false,
   variant = "primary",
   size = "md",
@@ -60,8 +60,8 @@ const Button = ({
           className="animate-spin shrink-0"
         />
       )}
-      {icon && !loading && (
-        <span className="shrink-0 flex items-center">{icon}</span>
+      {Icon && !loading && (
+        <span className="shrink-0 flex items-center">{<Icon size={20}/>}</span>
       )}
 
       <span>{label}</span>
