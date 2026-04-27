@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import AdSenseAd from "../utils/AdSenseAd";
-import { Calculator, Timer } from "lucide-react";
+import { BookCheck, Calculator, Timer } from "lucide-react";
 import RouteComponent from "../routes/RouteComponent";
 
 const Home = () => {
@@ -29,6 +29,11 @@ const Home = () => {
           title="Pomodoro Timer"
           desc="Stop procrastinating. Start a 25-minute focus sprint"
         />
+        <RouteComponent
+        link="/quiz-generator"
+        icon={BookCheck}
+        title="Random Questions Generator"
+        desc="Quiz yourself on anything—trivia, science, history, and more"/>
 
         <div className="grid grid-cols-3 gap-4 text-center mb-12">
           <div>
