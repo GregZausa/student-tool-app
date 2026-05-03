@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import AdSenseAd from "../utils/AdSenseAd";
-import { BookCheck, Calculator, Timer } from "lucide-react";
+import { BookCheck, Calculator, Notebook, Timer } from "lucide-react";
 import RouteComponent from "../routes/RouteComponent";
 import { useUser } from "../context/UserContext";
 import InfoSetUpModal from "../components/modal/InfoSetUpModal";
@@ -51,6 +51,12 @@ const Home = () => {
           link="/quiz-generator"
           icon={BookCheck}
           title="Random Questions Generator"
+          desc="Quiz yourself on anything—trivia, science, history, and more"
+        />
+        <RouteComponent
+          link="/todo-list"
+          icon={Notebook}
+          title="To-do List"
           desc="Quiz yourself on anything—trivia, science, history, and more"
         />
 
