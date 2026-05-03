@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { getStoredUser, createUser } from "../config/user";
+import { getStoredUser, createUser, getStoredUserName } from "../config/user";
 
 const UserContext = createContext(null);
 
@@ -9,10 +9,12 @@ export const UserProvider = ({ children }) => {
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    const stored = getStoredUser();
-    if (stored) {
-      setUserId(stored);
+    const storedId = getStoredUser();
+    const storedName = getStoredUserName();
+    if (storedId) {
+      setUserId(storedId);
     }
+    if (storedName) setName(storedName);
     setIsReady(true);
   }, []);
 
