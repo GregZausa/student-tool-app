@@ -63,7 +63,7 @@ const TodoList = () => {
     setAdding(true);
     const { data, error } = await supabase
       .from("todos")
-      .insert({ ...fields, user_id: userId?.userId })
+      .insert({ ...fields, user_id: userId })
       .select()
       .single();
 
