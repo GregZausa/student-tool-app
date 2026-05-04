@@ -11,7 +11,6 @@ const TodoItem = ({ todo, onToggle, onDelete }) => {
     <div
       className={`flex items-start gap-3 py-3 border-b border-slate-100 last:border-0 group transition-opacity ${todo.completed ? "opacity-50" : ""}`}
     >
-      {/* Checkbox */}
       <button
         onClick={() => onToggle(todo.id, todo.completed)}
         className="mt-0.5 shrink-0 cursor-pointer"
@@ -66,7 +65,7 @@ const TodoItem = ({ todo, onToggle, onDelete }) => {
 
       <button
         onClick={() => onDelete(todo.id)}
-        className="shrink-0 opacity-0 group-hover:opacity-100 text-slate-800 hover:text-red-800 transition-all cursor-pointer mt-0.5"
+        className="shrink-0  text-slate-800 hover:text-red-800 transition-all cursor-pointer mt-0.5"
       >
         <Trash2 size={20} />
       </button>
