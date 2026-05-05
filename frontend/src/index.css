@@ -8,7 +8,8 @@
   scrollbar-width: none;
 }
 
-html, body {
+html,
+body {
   overflow: auto;
 }
 
@@ -23,4 +24,25 @@ html {
 
 body {
   -ms-overflow-style: none;
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

@@ -152,7 +152,7 @@ const DashboardOverview = () => {
 
       <AdSenseAd />
 
-      <p className="text-center text-[11px] text-slate-300 mt-6">
+      <p className="text-center text-[11px] text-slate-500 mt-6">
         StudyTools · PH Student App 🇵🇭
       </p>
     </div>

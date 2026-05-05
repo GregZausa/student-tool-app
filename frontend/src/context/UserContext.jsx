@@ -22,7 +22,6 @@ export const UserProvider = ({ children }) => {
     setIsReady(true);
   }, []);
 
-  // 2. If name was just set but no userId yet — create user in Supabase
   useEffect(() => {
     if (!name || userId) return;
     const initUser = async () => {
@@ -32,14 +31,12 @@ export const UserProvider = ({ children }) => {
     initUser();
   }, [name, userId]);
 
-  // 3. If name was updated and userId already exists — update in Supabase
   const setName = async (newName) => {
     setNameState(newName);
     if (userId) {
       // User already exists — just update the name
       await updateUserName(userId, newName);
     }
-    // If no userId yet, the useEffect above will createUser with the new name
   };
 
   return (

@@ -272,7 +272,7 @@ const TodoList = () => {
 
           <AdSenseAd />
 
-          <p className="text-center text-[11px] text-slate-300 mt-5">
+          <p className="text-center text-[11px] text-slate-500 mt-5">
             To-do List · PH Study Tools 🇵🇭
           </p>
         </div>

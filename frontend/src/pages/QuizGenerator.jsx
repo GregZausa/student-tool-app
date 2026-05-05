@@ -166,7 +166,7 @@ const QuizGenerator = () => {
           )}
         </div>
 
-        <p className="text-center text-[11px] text-slate-300 mt-8">
+        <p className="text-center text-[11px] text-slate-500 mt-8">
           Quiz Generator · PH Study Tools 🇵🇭
         </p>
       </div>
