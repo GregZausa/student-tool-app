@@ -6,6 +6,7 @@ import QuizGenerator from "../pages/QuizGenerator";
 import TodoList from "../pages/TodoList";
 import DashboardLayout from "../pages/DashboardLayout";
 import DashboardOverview from "../pages/DashboardOverview";
+import Deadlines from "../pages/Deadline";
 
 const ComingSoon = ({ label }) => (
   <div className="flex flex-col items-center justify-center min-h-[60vh] text-slate-400">
@@ -16,20 +17,17 @@ const ComingSoon = ({ label }) => (
 );
 
 const router = createBrowserRouter([
-  { path: "/", element: <Home /> },
-  { path: "/gpa-calculator", element: <GPACalculator /> },
-  { path: "/pomodoro-timer", element: <PomodoroTimer /> },
-  { path: "/quiz-generator", element: <QuizGenerator /> },
-  { path: "/gpa-calculator", element: <GPACalculator /> },
-  { path: "/quiz-generator", element: <QuizGenerator /> },
-
+  {
+    path: "/",
+    element: <Home />,
+  },
   {
     path: "/dashboard",
     element: <DashboardLayout />,
     children: [
       { index: true, element: <DashboardOverview /> },
       { path: "todos", element: <TodoList /> },
-      { path: "deadlines", element: <ComingSoon label="Deadlines" /> },
+      { path: "deadlines", element: <Deadlines label="Deadlines" /> },
       { path: "notes", element: <ComingSoon label="Notes" /> },
       { path: "materials", element: <ComingSoon label="Learning Materials" /> },
       { path: "pomodoro", element: <PomodoroTimer /> },

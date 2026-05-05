@@ -15,64 +15,13 @@ import Header from "../components/layout/Header";
 import { GraduationCap, Lightbulb } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import TipBox from "../components/TipBox";
-
-function getBarWidth(gwa) {
-  if (!gwa) return 0;
-  return Math.max(0, Math.min(100, ((5.0 - gwa) / 4.0) * 100));
-}
-
-function getBarColor(gwa) {
-  if (gwa <= 1.5) return "bg-green-600";
-  if (gwa <= 2.5) return "bg-amber-500";
-  if (gwa <= 3.0) return "bg-orange-500";
-  return "bg-red-500";
-}
+import { getBarColor, getBarWidth } from "../utils/functions/gpa-calculator";
+import SemesterTab from "../components/SemesterTab";
+import SubjectRow from "../components/SubjectRow";
 
 let idCounter = 0;
 const uid = () => ++idCounter;
 
-const SubjectRow = ({ row, onChange, onDelete, index }) => (
-  <div className="grid grid-cols-[2fr_90px_175px_36px] gap-2 items-start py-2 border-b border-slate-100 last:border-0 animate-[fadeSlideIn_0.2s_ease]">
-    <FloatingLabelInput
-      type="text"
-      label={`Subject ${index + 1}`}
-      value={row.subject}
-      onChange={(val) => onChange(row.id, "subject", val)}
-    />
-
-    <FloatingLabelInput
-      type="number"
-      label="Units"
-      min={1}
-      max={6}
-      step={0.5}
-      value={row.units}
-      onChange={(val) => onChange(row.id, "units", val)}
-    />
-
-    <SelectBox
-      options={GRADE_SELECT_OPTIONS}
-      value={row.grade}
-      onChange={(val) => onChange(row.id, "grade", val)}
-      placeholder="— Grade —"
-      searchable={false}
-    />
-
-    <Button onClick={() => onDelete(row.id)} label="x" />
-  </div>
-);
-const SemesterTab = ({ label, active, onClick }) => (
-  <button
-    onClick={onClick}
-    className={`flex-1 px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap cursor-pointer ${
-      active
-        ? "bg-slate-800 text-slate-100 shadow-sm"
-        : "bg-transparent text-slate-500 hover:text-slate-700 hover:bg-white"
-    }`}
-  >
-    {label}
-  </button>
-);
 const GPACalculator = () => {
   const navigate = useNavigate();
 
@@ -151,7 +100,7 @@ const GPACalculator = () => {
   const barColorClass = gwa !== null ? getBarColor(gwa) : "bg-slate-200";
 
   const copyResult = () => {
-    const link = "https://student-tool-app.vercel.app/gpa-calculator";
+    const link = "https://student-tool-app.vercel.app/";
     const text =
       gwa !== null
         ? `My GWA this semester: ${gwa.toFixed(2)} (${remarks?.label}) — Compute yours here: ${link}`
@@ -404,7 +353,7 @@ const GPACalculator = () => {
 
         <AdSenseAd />
 
-        <p className="text-center text-[11px] text-slate-300 mt-5">
+        <p className="text-center text-[11px] text-slate-500 mt-5">
           PH GPA Calculator · For Filipino students 🇵🇭
         </p>
       </div>

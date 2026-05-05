@@ -611,7 +611,7 @@ const PomodoroTimer = () => {
 
         <AdSenseAd />
 
-        <p className="text-center text-[11px] text-slate-300 mt-5">
+        <p className="text-center text-[11px] text-slate-500 mt-5">
           Pomodoro Timer · PH Study Tools 🇵🇭
         </p>
       </div>

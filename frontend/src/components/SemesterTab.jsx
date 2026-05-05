@@ -1,0 +1,16 @@
+import React from "react";
+
+const SemesterTab = ({ label, active, onClick }) => (
+  <button
+    onClick={onClick}
+    className={`flex-1 px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap cursor-pointer ${
+      active
+        ? "bg-slate-800 text-slate-100 shadow-sm"
+        : "bg-transparent text-slate-500 hover:text-slate-700 hover:bg-white"
+    }`}
+  >
+    {label}
+  </button>
+);
+
+export default SemesterTab;
