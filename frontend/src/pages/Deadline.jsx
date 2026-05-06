@@ -4,22 +4,7 @@ import { useUser } from "../context/UserContext";
 import AdSenseAd from "../utils/AdSenseAd";
 import FloatingLabelInput from "../components/FloatingLabelInput";
 import SelectBox from "../components/SelectBox";
-import {
-  CalendarClock,
-  Plus,
-  Trash2,
-  Bell,
-  BellOff,
-  CheckCircle2,
-  Clock,
-  BookOpen,
-  FlaskConical,
-  FolderKanban,
-  MoreHorizontal,
-  X,
-  Inbox,
-  AlarmClock,
-} from "lucide-react";
+import { CalendarClock, Bell, BellOff, Clock, X, Inbox } from "lucide-react";
 import { TYPE_FILTER } from "../utils/constants/deadline.config";
 import { STATUS_FILTER } from "../utils/constants/todo-config";
 import { useNow } from "../utils/functions/deadline";
