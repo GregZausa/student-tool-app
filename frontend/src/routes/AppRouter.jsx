@@ -8,6 +8,7 @@ import DashboardLayout from "../pages/DashboardLayout";
 import DashboardOverview from "../pages/DashboardOverview";
 import Deadlines from "../pages/Deadline";
 import Notes from "../pages/Notes";
+import Materials from "../pages/Materials";
 
 const ComingSoon = ({ label }) => (
   <div className="flex flex-col items-center justify-center min-h-[60vh] text-slate-400">
@@ -30,7 +31,7 @@ const router = createBrowserRouter([
       { path: "todos", element: <TodoList /> },
       { path: "deadlines", element: <Deadlines label="Deadlines" /> },
       { path: "notes", element: <Notes label="Notes" /> },
-      { path: "materials", element: <ComingSoon label="Learning Materials" /> },
+      { path: "materials", element: <Materials label="Learning Materials" /> },
       { path: "pomodoro", element: <PomodoroTimer /> },
       { path: "gpa-calculator", element: <GPACalculator /> },
       { path: "quiz-generator", element: <QuizGenerator /> },
