@@ -2,8 +2,8 @@ import { useState, useEffect, useCallback } from "react";
 import { supabase } from "../config/supabase";
 import { useUser } from "../context/UserContext";
 import AdSenseAd from "../utils/AdSenseAd";
-import FloatingLabelInput from "../components/FloatingLabelInput";
-import SelectBox from "../components/SelectBox";
+import FloatingLabelInput from "../components/ui/FloatingLabelInput";
+import SelectBox from "../components/ui/SelectBox";
 import { CalendarClock, Bell, BellOff, Clock, X, Inbox } from "lucide-react";
 import { TYPE_FILTER } from "../utils/constants/deadline.config";
 import { STATUS_FILTER } from "../utils/constants/todo-config";
@@ -11,9 +11,11 @@ import { useNow } from "../utils/functions/deadline";
 import AddDeadlineForm from "../components/forms/AddDeadlineForm";
 import DeadlineItem from "../components/DeadlineItem";
 import Header from "../components/layout/Header";
+import { useTheme } from "../context/ThemeContext";
 
 const Deadlines = () => {
   const { userId } = useUser();
+  const { isDark } = useTheme();
   const now = useNow();
 
   const [deadlines, setDeadlines] = useState([]);
@@ -53,7 +55,6 @@ const Deadlines = () => {
     deadlines.forEach((d) => {
       if (d.completed) return;
       const diff = new Date(d.due_date) - now;
-      // Notify when exactly 1 hour left (within the current minute window)
       if (diff > 0 && diff <= 60 * 60 * 1000 && diff > 59 * 60 * 1000) {
         new Notification(`⏰ 1 hour left: ${d.title}`, {
           body: d.subject ? `${d.subject} — due in 1 hour` : "Due in 1 hour!",
@@ -113,24 +114,15 @@ const Deadlines = () => {
   const activeFilters = [filterType, filterStatus].filter(Boolean).length;
 
   return (
-    <div className="min-h-screen bg-slate-50 font-sans">
+    <div className="max-w-4xl mx-auto">
       <Header
+        isDark={isDark}
+        icon={<CalendarClock size={20} className="text-red-500"/>}
         header="Deadlines"
         subHeader="Track exams, assignments, and projects"
-        icon={CalendarClock}
-        tool={
-          <button
-            onClick={requestNotif}
-            className={`flex items-center gap-1.5 px-3 py-2 rounded-xl border text-xs font-semibold transition-all cursor-pointer ${
-              notifGranted
-                ? "bg-emerald-50 border-emerald-200 text-emerald-600"
-                : "bg-white border-slate-200 text-slate-500 hover:bg-slate-50"
-            }`}
-          >
-            {notifGranted ? <Bell size={13} /> : <BellOff size={13} />}
-            {notifGranted ? "Alerts on" : "Enable alerts"}
-          </button>
-        }
+        buttoNlabel={notifGranted ? "Alers On" : "Enable Alerts"}
+        buttonStyle={notifGranted ? "granted" : "notGranted"}
+        buttonIcon={notifGranted ? <Bell size={13} /> : <BellOff size={13} />}
       />
 
       <div className="max-w-2xl mx-auto px-4 pb-16">
@@ -149,7 +141,7 @@ const Deadlines = () => {
             ].map(({ label, value, color }) => (
               <div
                 key={label}
-                className="bg-white rounded-2xl p-3.5 border border-slate-200 text-center"
+                className={`${isDark ? "bg-slate-800 border-slate-700" : "bg-white border-slate-100"} rounded-2xl p-3.5 border  text-center`}
               >
                 <div className="text-[10px] text-slate-400 font-semibold uppercase tracking-widest mb-1">
                   {label}
@@ -161,15 +153,15 @@ const Deadlines = () => {
             ))}
           </div>
         </div>
-        <AddDeadlineForm onAdd={handleAdd} loading={adding} />
+        <AddDeadlineForm onAdd={handleAdd} loading={adding} isDark={isDark} />
 
         <div className="mb-4">
           <button
             onClick={() => setShowFilter((v) => !v)}
             className={`flex items-center gap-2 px-3 py-2 rounded-xl border text-xs font-semibold transition-all cursor-pointer ${
               activeFilters > 0
-                ? "bg-red-50 border-red-200 text-red-600"
-                : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"
+                ? `${isDark ? "bg-red-800 text-slate-50 border-red-700" : "bg-red-50 border-red-200 text-red-600"}`
+                : `${isDark ? "bg-slate-800 border-slate-700 text-slate-200 hover:slate-500" : "bg-white border-slate-100 text-slate-600 hover:bg-slate-50"}`
             }`}
           >
             <Clock size={13} />
@@ -182,13 +174,16 @@ const Deadlines = () => {
           </button>
 
           {showFilter && (
-            <div className="bg-white rounded-2xl border border-slate-200 p-4 mt-2 animate-[fadeSlideIn_0.2s_ease]">
+            <div
+              className={`border ${isDark ? "bg-slate-800 border-slate-700" : "bg-white border-slate-100"} rounded-2xl p-4 mt-2 animate-[fadeSlideIn_0.2s_ease]`}
+            >
               <div className="grid grid-cols-2 gap-3 mb-3">
                 <div>
                   <div className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider mb-1.5">
                     Type
                   </div>
                   <SelectBox
+                    isDark={isDark}
                     options={TYPE_FILTER}
                     value={filterType}
                     onChange={setFilterType}
@@ -199,6 +194,7 @@ const Deadlines = () => {
                     Status
                   </div>
                   <SelectBox
+                    isDark={isDark}
                     options={STATUS_FILTER}
                     value={filterStatus}
                     onChange={setFilterStatus}
@@ -222,12 +218,16 @@ const Deadlines = () => {
 
         <div className="mb-4">
           {fetching ? (
-            <div className="bg-white rounded-2xl border border-slate-200 p-8 text-center text-slate-300">
+            <div
+              className={`border ${isDark ? "bg-slate-800 border-slate-700 text-slate-300" : "bg-white border-slate-700 text-slate-500"} rounded-2xl   p-8 text-center `}
+            >
               <div className="w-6 h-6 border-2 border-slate-200 border-t-red-500 rounded-full animate-spin mx-auto mb-2" />
               <div className="text-sm">Loading deadlines...</div>
             </div>
           ) : filtered.length === 0 ? (
-            <div className="bg-white rounded-2xl border border-slate-200 p-10 text-center text-slate-300">
+            <div
+              className={`border ${isDark ? "bg-slate-800 border-slate-700 text-slate-300" : "bg-white border-slate-100 text-slate-500"} rounded-2xl   p-10 text-center `}
+            >
               <Inbox size={32} className="mx-auto mb-2 opacity-50" />
               <div className="text-sm font-medium">
                 {activeFilters > 0
@@ -238,6 +238,7 @@ const Deadlines = () => {
           ) : (
             filtered.map((d) => (
               <DeadlineItem
+              isDark={isDark}
                 key={d.id}
                 deadline={d}
                 onToggle={handleToggle}

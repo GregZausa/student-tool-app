@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import FloatingLabelInput from "../FloatingLabelInput";
+import FloatingLabelInput from "../ui/FloatingLabelInput";
 import { PRIORITIES, PRIORITY_STYLES } from "../../utils/constants/todo-config";
 import { Plus } from "lucide-react";
 

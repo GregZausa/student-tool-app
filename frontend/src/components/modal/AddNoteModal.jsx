@@ -1,9 +1,9 @@
 import { Check, X } from "lucide-react";
 import React, { useState } from "react";
-import FloatingLabelInput from "../FloatingLabelInput";
+import FloatingLabelInput from "../ui/FloatingLabelInput";
 import { NOTE_COLORS } from "../../utils/constants/notes.config";
 
-const AddNoteModal = ({ onAdd, onClose, loading }) => {
+const AddNoteModal = ({ onAdd, onClose, loading, isDark }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [subject, setSubject] = useState("");
@@ -26,12 +26,20 @@ const AddNoteModal = ({ onAdd, onClose, loading }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-slate-900/50 backdrop-blur-sm animate-[fadeIn_0.2s_ease]">
-      <div className="bg-white rounded-3xl border border-slate-200 shadow-2xl w-full max-w-md p-6 animate-[slideUp_0.25s_ease]">
+      <div
+        className={`${
+          isDark ? "bg-slate-800 border-slate-700" : "bg-white border-slate-200"
+        } rounded-3xl border shadow-2xl w-full max-w-md p-6 animate-[slideUp_0.25s_ease]`}
+      >
         <div className="flex items-center justify-between mb-5">
-          <h2 className="text-base font-bold text-slate-800">New note</h2>
+          <h2
+            className={`text-base font-bold ${isDark ? "text-slate-50" : "text-slate-800"}`}
+          >
+            New note
+          </h2>
           <button
             onClick={onClose}
-            className="w-7 h-7 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 flex items-center justify-center cursor-pointer"
+            className={`w-7 h-7 rounded-lg  ${isDark ? "hover:text-slate-200 hover:bg-slate-700" : "hover:text-slate-600 hover:bg-slate-100"} text-slate-400 flex items-center justify-center cursor-pointer`}
           >
             <X size={15} />
           </button>
@@ -39,6 +47,7 @@ const AddNoteModal = ({ onAdd, onClose, loading }) => {
 
         <div className="space-y-3">
           <FloatingLabelInput
+            isDark={isDark}
             type="text"
             label="Title"
             value={title}
@@ -57,11 +66,12 @@ const AddNoteModal = ({ onAdd, onClose, loading }) => {
               onChange={(e) => setContent(e.target.value)}
               placeholder="Write your note..."
               rows={5}
-              className="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm text-slate-700 placeholder:text-slate-400 outline-none focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100 transition-all resize-none"
+              className={`w-full px-4 py-3 rounded-xl border ${isDark ? "border-slate-700 text-slate-100 focus:border-slate-600 focus:ring-slate-700" : "border-slate-200 text-slate-700 focus:border-indigo-400 focus:ring-indigo-100"}  text-sm  placeholder:text-slate-400 outline-none  focus:ring-4  transition-all resize-none`}
             />
           </div>
 
           <FloatingLabelInput
+            isDark={isDark}
             type="text"
             label="Subject (optional)"
             value={subject}
@@ -97,7 +107,7 @@ const AddNoteModal = ({ onAdd, onClose, loading }) => {
         <div className="flex gap-2 mt-5">
           <button
             onClick={onClose}
-            className="flex-1 py-2.5 rounded-xl border border-slate-200 text-slate-600 text-sm font-medium hover:bg-slate-50 transition-colors cursor-pointer"
+            className={`flex-1 py-2.5 rounded-xl border ${isDark ? "border-slate-700 text-slate-200" : "border-slate-200 text-slate-600"} text-sm font-medium hover:bg-slate-50 hover:text-slate-600 transition-colors cursor-pointer`}
           >
             Cancel
           </button>
