@@ -2,8 +2,8 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { supabase } from "../config/supabase";
 import { useUser } from "../context/UserContext";
 import AdSenseAd from "../utils/AdSenseAd";
-import FloatingLabelInput from "../components/FloatingLabelInput";
-import SelectBox from "../components/SelectBox";
+import FloatingLabelInput from "../components/ui/FloatingLabelInput";
+import SelectBox from "../components/ui/SelectBox";
 import {
   StickyNote,
   Plus,
@@ -17,6 +17,9 @@ import { COLOR_FILTER, NOTE_COLORS } from "../utils/constants/notes.config";
 import { getColorConfig, timeAgo } from "../utils/functions/notes";
 import NoteCard from "../components/cards/NoteCard";
 import AddNoteModal from "../components/modal/AddNoteModal";
+import { useTheme } from "../context/ThemeContext";
+import SearchBar from "../components/ui/SearchBar";
+import Header from "../components/layout/Header";
 
 const Notes = () => {
   const { userId } = useUser();
@@ -28,6 +31,8 @@ const Notes = () => {
   const [search, setSearch] = useState("");
   const [filterColor, setFilterColor] = useState("");
   const [filterSubject, setFilterSubject] = useState("");
+
+  const { isDark } = useTheme();
 
   const fetchNotes = useCallback(async () => {
     if (!userId) return;
@@ -98,48 +103,30 @@ const Notes = () => {
 
   return (
     <div className="max-w-4xl mx-auto">
-      <div className="flex items-center justify-between mb-5">
-        <div>
-          <h1 className="text-xl font-bold text-slate-800 flex items-center gap-2">
-            <StickyNote size={20} className="text-amber-500" /> Notes
-          </h1>
-          <p className="text-xs text-slate-400 mt-0.5">
-            {notes.length} note{notes.length !== 1 ? "s" : ""} saved
-          </p>
-        </div>
-        <button
-          onClick={() => setShowModal(true)}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-indigo-500 hover:bg-indigo-600 text-white text-sm font-semibold transition-colors cursor-pointer"
-        >
-          <Plus size={15} /> New note
-        </button>
-      </div>
-
+      <Header
+        isDark={isDark}
+        header="Notes"
+        icon={<StickyNote size={20} className="text-amber-500" />}
+        subHeader={`${notes.length} note${notes.length !== 1 ? "s" : ""} saved`}
+        buttoNlabel="New note"
+        buttonIcon={<Plus size={15} />}
+        buttonStyle="default"
+        onClick={() => setShowModal(true)}
+      />
       <AdSenseAd />
-
       <div className="space-y-2 mb-5">
-        <div className="flex items-center gap-2 bg-white border border-slate-200 rounded-xl px-3.5 py-2.5">
-          <Search size={14} className="text-slate-400 shrink-0" />
-          <input
-            type="text"
-            placeholder="Search notes..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="flex-1 text-sm text-slate-700 placeholder:text-slate-400 outline-none bg-transparent"
-          />
-          {search && (
-            <button
-              onClick={() => setSearch("")}
-              className="text-slate-400 hover:text-slate-600 cursor-pointer"
-            >
-              <X size={13} />
-            </button>
-          )}
-        </div>
-
+        <SearchBar
+          placeholder="Search notes..."
+          isDark={isDark}
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          onClick={() => setSearch("")}
+          buttonIcon={<X size={13} />}
+        />
         <div className="flex gap-2 flex-wrap">
           <div className="w-40">
             <SelectBox
+              isDark={isDark}
               options={COLOR_FILTER}
               value={filterColor}
               onChange={setFilterColor}
@@ -149,6 +136,7 @@ const Notes = () => {
           {subjects.length > 0 && (
             <div className="w-44">
               <SelectBox
+                isDark={isDark}
                 options={subjectOptions}
                 value={filterSubject}
                 onChange={setFilterSubject}
@@ -161,7 +149,7 @@ const Notes = () => {
                 setFilterColor("");
                 setFilterSubject("");
               }}
-              className="flex items-center gap-1 px-3 py-2 rounded-xl border border-slate-200 text-xs text-slate-400 hover:text-red-400 transition-colors cursor-pointer bg-white"
+              className={`flex items-center gap-1 px-3 py-2 rounded-xl border ${isDark ? "bg-slate-800 border-slate-700 text-slate-200" : "bg-white  border-slate-200 text-slate-600"} text-xs transition-colors cursor-pointer hover:text-red-400 `}
             >
               <X size={11} /> Clear
             </button>
@@ -177,7 +165,9 @@ const Notes = () => {
           </div>
         </div>
       ) : filtered.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-slate-200 p-12 text-center text-slate-300">
+        <div
+          className={` rounded-2xl border ${isDark ? "border-slate-700 text-slate-50 bg-slate-800" : "bg-slate-50 border-slate-200 text-slate-300"}  p-12 text-center `}
+        >
           <Inbox size={32} className="mx-auto mb-2 opacity-50" />
           <div className="text-sm font-medium">
             {search || activeFilters > 0
@@ -190,6 +180,7 @@ const Notes = () => {
           {filtered.map((note) => (
             <div key={note.id} className="break-inside-avoid">
               <NoteCard
+                isDark={isDark}
                 note={note}
                 onDelete={handleDelete}
                 onUpdate={handleUpdate}
@@ -203,6 +194,7 @@ const Notes = () => {
 
       {showModal && (
         <AddNoteModal
+          isDark={isDark}
           onAdd={handleAdd}
           onClose={() => setShowModal(false)}
           loading={adding}

@@ -2,13 +2,13 @@ import React, { useRef, useState } from "react";
 import { getColorConfig, timeAgo } from "../../utils/functions/notes";
 import { Check, Trash2, X } from "lucide-react";
 
-const NoteCard = ({ note, onDelete, onUpdate }) => {
+const NoteCard = ({ note, onDelete, onUpdate, isDark }) => {
   const [editing, setEditing] = useState(false);
   const [title, setTitle] = useState(note.title);
   const [content, setContent] = useState(note.content || "");
   const [saving, setSaving] = useState(false);
   const contentRef = useRef(null);
-  const cfg = getColorConfig(note.color);
+  const cfg = getColorConfig(note.color, isDark);
 
   const handleSave = async () => {
     if (!title.trim()) return;
@@ -118,7 +118,9 @@ const NoteCard = ({ note, onDelete, onUpdate }) => {
 
       <div className="px-3.5 py-2 flex items-center justify-between">
         {note.subject && (
-          <span className="text-[10px] text-slate-500 font-medium truncate max-w-30">
+          <span
+            className={`text-[10px] ${isDark ? "text-slate-200" : "text-slate-500"} font-medium truncate max-w-30`}
+          >
             📚 {note.subject}
           </span>
         )}

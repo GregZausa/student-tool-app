@@ -4,15 +4,19 @@ import Sidebar from "../components/layout/Sidebar";
 import { Menu, X } from "lucide-react";
 import { useUser } from "../context/UserContext";
 import InfoSetUpModal from "../components/modal/InfoSetUpModal";
+import { useTheme } from "../context/ThemeContext";
 
 const DashboardLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { name, userId, isReady } = useUser();
+  const { isDark } = useTheme();
 
   if (!isReady) return null;
 
   return (
-    <div className="min-h-screen bg-slate-50 flex font-sans">
+    <div
+      className={`min-h-screen ${isDark ? "bg-slate-800" : "bg-slate-50"} flex font-sans `}
+    >
       {isReady && !userId && <InfoSetUpModal />}
       <div className="hidden lg:flex lg:flex-col lg:w-60 lg:fixed lg:inset-y-0 lg:z-30">
         <Sidebar />
@@ -31,23 +35,33 @@ const DashboardLayout = () => {
       )}
 
       <div className="flex-1 lg:ml-60 flex flex-col min-h-screen">
-        <div className="lg:hidden flex items-center justify-between px-4 py-3 bg-white border-b border-slate-200 sticky top-0 z-20">
+        <div
+          className={`lg:hidden flex items-center justify-between px-4 py-3 ${isDark ? "bg-slate-800 border-slate-800" : "bg-white border-b border-slate-200 "}sticky top-0 z-20`}
+        >
           <div className="flex items-center gap-2">
             <div className="w-7 h-7 bg-indigo-500 rounded-lg flex items-center justify-center text-white font-bold text-xs">
               S
             </div>
-            <span className="text-sm font-bold text-slate-800">StudyTools</span>
+            <span
+              className={`text-sm font-bold ${isDark ? "text-slate-50" : "text-slate-800"}`}
+            >
+              StudyTools
+            </span>
           </div>
           <div className="flex items-center gap-3">
-            <span className="text-sm text-slate-500">
+            <span
+              className={`text-sm ${isDark ? "text-slate-200" : "text-slate-500"}`}
+            >
               Hi,{" "}
-              <span className="font-semibold text-slate-700">
+              <span
+                className={`font-semibold ${isDark ? "text-slate-100" : "text-slate-700"}`}
+              >
                 {name || "Student"}
               </span>
             </span>
             <button
               onClick={() => setSidebarOpen(true)}
-              className="w-8 h-8 flex items-center justify-center rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 cursor-pointer"
+              className={`w-8 h-8 flex items-center justify-center rounded-lg border ${isDark ? " text-slate-50 hover:bg-slate-60 " : "border-slate-200 text-slate-600 hover:bg-slate-50"} cursor-pointer`}
             >
               <Menu size={16} />
             </button>

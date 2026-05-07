@@ -1,14 +1,14 @@
 import { X } from "lucide-react";
 import { useState } from "react";
-import FloatingLabelInput from "../FloatingLabelInput";
+import FloatingLabelInput from "../ui/FloatingLabelInput";
 import {
   MATERIAL_TYPES,
   TYPE_CONFIG,
 } from "../../utils/constants/materials.config";
-import SelectBox from "../SelectBox";
+import SelectBox from "../ui/SelectBox";
 import { detectType } from "../../utils/functions/materials";
 
-const AddMaterialModal = ({ onAdd, onClose, loading }) => {
+const AddMaterialModal = ({ onAdd, onClose, loading, isDark }) => {
   const [title, setTitle] = useState("");
   const [url, setUrl] = useState("");
   const [subject, setSubject] = useState("");
@@ -47,9 +47,11 @@ const AddMaterialModal = ({ onAdd, onClose, loading }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-slate-900/50 backdrop-blur-sm animate-[fadeIn_0.2s_ease]">
-      <div className="bg-white rounded-3xl border border-slate-200 shadow-2xl w-full max-w-md p-6 animate-[slideUp_0.25s_ease]">
+      <div
+        className={`border ${isDark ? "bg-slate-800 border-slate-700" : "bg-white border-slate-100"} rounded-3xl   shadow-2xl w-full max-w-md p-6 animate-[slideUp_0.25s_ease]`}
+      >
         <div className="flex items-center justify-between mb-5">
-          <h2 className="text-base font-bold text-slate-800">Add material</h2>
+          <h2 className={`text-base font-bold ${isDark ? "text-slate-50" : "text-slate-800"}`}>Add material</h2>
           <button
             onClick={onClose}
             className="w-7 h-7 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 flex items-center justify-center cursor-pointer"
@@ -60,6 +62,7 @@ const AddMaterialModal = ({ onAdd, onClose, loading }) => {
 
         <div className="space-y-3">
           <FloatingLabelInput
+            isDark={isDark}
             type="text"
             label="Title"
             value={title}
@@ -70,6 +73,7 @@ const AddMaterialModal = ({ onAdd, onClose, loading }) => {
           />
 
           <FloatingLabelInput
+            isDark={isDark}
             type="url"
             label="URL / Link"
             value={url}
@@ -99,6 +103,7 @@ const AddMaterialModal = ({ onAdd, onClose, loading }) => {
               Type
             </div>
             <SelectBox
+              isDark={isDark}
               options={MATERIAL_TYPES}
               value={type}
               onChange={setType}
@@ -106,6 +111,7 @@ const AddMaterialModal = ({ onAdd, onClose, loading }) => {
           </div>
 
           <FloatingLabelInput
+            isDark={isDark}
             type="text"
             label="Subject (optional)"
             value={subject}

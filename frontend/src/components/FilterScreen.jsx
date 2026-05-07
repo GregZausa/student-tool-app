@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import SelectBox from "./SelectBox";
+import SelectBox from "./ui/SelectBox";
 import { AMOUNTS, CATEGORIES, DIFFICULTIES, TYPES } from "../utils/constants/quiz-generator-config";
 import { ChevronRight } from "lucide-react";
 

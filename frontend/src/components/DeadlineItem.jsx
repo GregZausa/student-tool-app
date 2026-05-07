@@ -7,7 +7,7 @@ import {
   URGENCY_STYLES,
 } from "../utils/constants/deadline.config";
 
-const DeadlineItem = ({ deadline, onToggle, onDelete, now }) => {
+const DeadlineItem = ({ deadline, onToggle, onDelete, now, isDark }) => {
   const { label, urgency } = getCountdown(deadline.due_date);
   const styles = URGENCY_STYLES[urgency];
   const typeConf = TYPE_CONFIG[deadline.type] || TYPE_CONFIG.other;

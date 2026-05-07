@@ -7,23 +7,25 @@ import {
   gradeTableRows,
 } from "../utils/constants/grade-config";
 import { getRemarks, REMARKS_CONFIG } from "../utils/constants/remarks-config";
-import FloatingLabelInput from "../components/FloatingLabelInput";
-import SelectBox from "../components/SelectBox";
+import FloatingLabelInput from "../components/ui/FloatingLabelInput";
+import SelectBox from "../components/ui/SelectBox";
 import StatCard from "../components/cards/StatCard";
-import Button from "../components/Button";
+import Button from "../components/ui/Button";
 import Header from "../components/layout/Header";
-import { GraduationCap, Lightbulb } from "lucide-react";
+import { Calculator, GraduationCap, Lightbulb } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import TipBox from "../components/TipBox";
 import { getBarColor, getBarWidth } from "../utils/functions/gpa-calculator";
 import SemesterTab from "../components/SemesterTab";
 import SubjectRow from "../components/SubjectRow";
+import { useTheme } from "../context/ThemeContext";
 
 let idCounter = 0;
 const uid = () => ++idCounter;
 
 const GPACalculator = () => {
   const navigate = useNavigate();
+  const { isDark } = useTheme();
 
   const backtoHome = () => {
     navigate("/");
@@ -113,12 +115,12 @@ const GPACalculator = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 font-sans">
+    <div className="max-w-4xl mx-auto">
       <Header
+        isDark={isDark}
         header="PH GPA CALCULATOR"
         subHeader="Philippine grading system · 1.0 (Excellent) to 5.0 (Failed)"
-        icon={GraduationCap}
-        onClick={() => backtoHome()}
+        icon={<Calculator size={20} className="text-sky-500" />}
       />
 
       <div className="max-w-2xl mx-auto px-4 pb-16">

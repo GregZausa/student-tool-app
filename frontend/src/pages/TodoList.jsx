@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
 import AdSenseAd from "../utils/AdSenseAd";
 import Header from "../components/layout/Header";
-import FloatingLabelInput from "../components/FloatingLabelInput";
-import SelectBox from "../components/SelectBox";
+import FloatingLabelInput from "../components/ui/FloatingLabelInput";
+import SelectBox from "../components/ui/SelectBox";
 import { useUser } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../config/supabase";
@@ -26,10 +26,12 @@ import {
 } from "../utils/constants/todo-config";
 import AddTodoForm from "../components/forms/AddTodoForm";
 import TodoItem from "../components/TodoItem";
+import { useTheme } from "../context/ThemeContext";
 
 const TodoList = () => {
   const navigate = useNavigate();
   const { userId } = useUser();
+  const { isDark } = useTheme();
 
   const [todos, setTodos] = useState([]);
   const [fetching, setFetching] = useState(true);
@@ -122,12 +124,12 @@ const TodoList = () => {
   ).length;
 
   return (
-    <div className="min-h-screen bg-slate-50 font-sans">
+    <div className="max-w-4xl mx-auto">
       <Header
+        isDark={isDark}
         header="To-do List"
         subHeader="Track your tasks and assignments — synced automatically"
-        icon={CheckSquare}
-        onClick={() => navigate("/")}
+        icon={<CheckSquare size={20} className="text-indigo-500"/>}
       />
 
       <div className="max-w-2xl mx-auto px-4 pb-16">

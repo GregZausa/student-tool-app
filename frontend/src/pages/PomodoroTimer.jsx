@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import AdSenseAd from "../utils/AdSenseAd";
-import SelectBox from "../components/SelectBox";
-import FloatingLabelInput from "../components/FloatingLabelInput";
+import SelectBox from "../components/ui/SelectBox";
+import FloatingLabelInput from "../components/ui/FloatingLabelInput";
 import Header from "../components/layout/Header";
 import { Lightbulb, RotateCcw, SkipForward, Timer } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -17,8 +17,9 @@ import {
   formatDuration,
 } from "../utils/functions/pomodoro";
 import SessionItem from "../components/SessionItem";
-import Button from "../components/Button";
+import Button from "../components/ui/Button";
 import TipBox from "../components/TipBox";
+import { useTheme } from "../context/ThemeContext";
 
 function playAlarm(audioCtx, type = "focus") {
   if (!audioCtx) return;
@@ -62,6 +63,7 @@ function playAlarm(audioCtx, type = "focus") {
 
 const PomodoroTimer = () => {
   const navigate = useNavigate();
+  const { isDark } = useTheme();
 
   const [mode, setMode] = useState("focus");
   const [durations, setDurations] = useState({
@@ -298,11 +300,12 @@ const PomodoroTimer = () => {
   const activeSubject = subject === "Other" ? customSubject : subject;
 
   return (
-    <div className="min-h-screen bg-slate-50 font-sans">
+    <div className="max-w-4xl mx-auto">
       <Header
+        isDark={isDark}
         header="Pomodoro Timer"
         subHeader="Focus. Break. Repeat. — Para sa mga estudyante 🇵🇭"
-        icon={Timer}
+        icon={<Timer size={20} className="text-purple-500" />}
         onClick={() => navigate("/")}
       />
 

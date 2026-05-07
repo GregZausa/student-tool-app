@@ -1,7 +1,7 @@
 import { useState } from "react";
-import FloatingLabelInput from "../FloatingLabelInput";
+import FloatingLabelInput from "../ui/FloatingLabelInput";
 import { useUser } from "../../context/UserContext";
-import Button from "../Button";
+import Button from "../ui/Button";
 import { GraduationCap } from "lucide-react";
 
 const InfoSetUpModal = () => {
@@ -9,7 +9,6 @@ const InfoSetUpModal = () => {
   const [tempName, setTempName] = useState("");
   const [error,    setError]    = useState("");
 
-  // Only show if no name yet
   if (name) return null;
 
   const handleSubmit = () => {

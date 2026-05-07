@@ -13,7 +13,13 @@ import {
   Sun,
   Sunset,
   Moon,
+  LightbulbOff,
+  Lightbulb,
 } from "lucide-react";
+import { useState } from "react";
+import Button from "../components/ui/Button";
+import { useTheme } from "../context/ThemeContext";
+import ToggleButton from "../components/ui/ToggleButton";
 
 function getGreeting() {
   const h = new Date().getHours();
@@ -22,25 +28,29 @@ function getGreeting() {
   return { text: "Good evening", icon: Moon };
 }
 
-const QuickCard = ({ to, icon: Icon, label, desc, color, count }) => (
+const QuickCard = ({ to, icon: Icon, label, desc, color, count, isDark }) => (
   <Link
     to={to}
-    className="group bg-white rounded-2xl border border-slate-200 p-4 hover:border-indigo-200 hover:shadow-sm transition-all flex flex-col gap-3"
+    className={`group ${isDark ? "bg-slate-800 border-slate-700 hover:slate-600" : "bg-white border-slate-200 hover:border-indigo-200"} rounded-2xl  border p-4  hover:shadow-sm transition-all hover:scale-103 flex flex-col gap-3`}
   >
     <div className="flex items-start justify-between">
       <div
-        className={`w-9 h-9 rounded-xl flex items-center justify-center ${color}`}
+        className={`w-9 h-9 rounded-xl flex items-center justify-center ${color} ${isDark ? "bg-slate-800" : "bg-slate-50"}`}
       >
         <Icon size={17} />
       </div>
       {count !== undefined && (
-        <span className="text-xs font-bold text-slate-400 font-mono">
+        <span
+          className={`text-xs font-bold ${isDark ? "text-slate-200" : "text-slate-600"}  font-mono`}
+        >
           {count}
         </span>
       )}
     </div>
     <div>
-      <div className="text-sm font-semibold text-slate-800 group-hover:text-indigo-600 transition-colors">
+      <div
+        className={`text-sm font-semibold ${isDark ? "text-slate-50" : "text-slate-800"}  group-hover:text-indigo-600 transition-colors`}
+      >
         {label}
       </div>
       <div className="text-xs text-slate-400 mt-0.5 leading-snug">{desc}</div>
@@ -54,6 +64,7 @@ const QuickCard = ({ to, icon: Icon, label, desc, color, count }) => (
 const DashboardOverview = () => {
   const { name } = useUser();
   const { text: greetText, icon: GreetIcon } = getGreeting();
+  const { isDark, toggleTheme } = useTheme();
 
   const QUICK_LINKS = [
     {
@@ -99,7 +110,7 @@ const DashboardOverview = () => {
       color: "bg-sky-50 text-sky-500",
     },
     {
-      to: "/quiz-generator",
+      to: "/dashboard/quiz-generator",
       icon: BrainCircuit,
       label: "Quiz Generator",
       desc: "Test your knowledge",
@@ -108,40 +119,55 @@ const DashboardOverview = () => {
   ];
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="max-w-4xl mx-auto ">
       <div className="mb-6">
-        <div className="flex items-center gap-2 text-slate-500 text-sm mb-1">
+        <div
+          className={`flex items-center gap-2 ${isDark ? "text-slate-200" : "text-slate-500"}  text-sm mb-1`}
+        >
           <GreetIcon size={15} />
           <span>{greetText}</span>
         </div>
-        <h1 className="text-2xl font-bold text-slate-800">
+        <h1
+          className={`text-2xl font-bold ${isDark ? "text-slate-50" : "text-slate-800"} `}
+        >
           {name ? `${name}'s Dashboard` : "My Dashboard"} 👋
         </h1>
-        <p className="text-sm text-slate-500 mt-1">
+        <p
+          className={`text-sm ${isDark ? "text-slate-400" : "text-slate-500"}  mt-1`}
+        >
           Lahat ng kailangan mo — nasa isang lugar lang.
         </p>
       </div>
 
       <AdSenseAd />
+
       <div className="mb-6">
-        <h2 className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-3">
+        <h2
+          className={`text-xs font-semibold ${isDark ? "text-slate-200" : "text-slate-400"}  uppercase tracking-widest mb-3`}
+        >
           Quick access
         </h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
           {QUICK_LINKS.map((item) => (
-            <QuickCard key={item.to} {...item} />
+            <QuickCard key={item.to} {...item} isDark={isDark} />
           ))}
         </div>
       </div>
 
-      <div className="bg-indigo-50 rounded-2xl border border-indigo-100 p-4 mb-6">
+      <div
+        className={`${isDark ? "bg-slate-800 border-slate-700" : "bg-indigo-50 border-indigo-100"} rounded-2xl border  p-4 mb-6`}
+      >
         <div className="flex items-start gap-3">
           <span className="text-2xl">💡</span>
           <div>
-            <div className="text-sm font-semibold text-indigo-800 mb-1">
+            <div
+              className={`text-sm font-semibold ${isDark ? "text-slate-50" : "text-indigo-800"} mb-1`}
+            >
               Pro tip para sa dashboard mo
             </div>
-            <p className="text-xs text-indigo-600 leading-relaxed">
+            <p
+              className={`text-xs ${isDark ? "text-slate-50" : "text-indigo-600"} leading-relaxed`}
+            >
               Gamitin ang <strong>Pomodoro timer</strong> habang tinitingnan ang
               iyong to-do list — mas focused ka at mas marami kang matatapos na
               tasks ngayon.

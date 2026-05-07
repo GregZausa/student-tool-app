@@ -1,20 +1,20 @@
 import { useState, useCallback } from "react";
 import AdSenseAd from "../utils/AdSenseAd";
 import Header from "../components/layout/Header";
-import SelectBox from "../components/SelectBox";
-import Button from "../components/Button";
-import { BookCheck, ChevronRight, X } from "lucide-react";
+import SelectBox from "../components/ui/SelectBox";
+import Button from "../components/ui/Button";
+import { BookCheck, BrainCircuit, ChevronRight, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-import {
-  shuffle,
-} from "../utils/functions/quiz-generator";
+import { shuffle } from "../utils/functions/quiz-generator";
 import FilterScreen from "../components/FilterScreen";
 import QuestionScreen from "../components/QuestionScreen";
 import ResultsScreen from "../components/ResultsScreen";
+import { useTheme } from "../context/ThemeContext";
 
 const QuizGenerator = () => {
   const navigate = useNavigate();
+  const { isDark } = useTheme();
 
   const [screen, setScreen] = useState("filter");
   const [loading, setLoading] = useState(false);
@@ -106,11 +106,12 @@ const QuizGenerator = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 font-sans">
+    <div className="max-w-4xl mx-auto">
       <Header
+        isDark={isDark}
         header="Quiz Generator"
         subHeader="Test your knowledge — powered by OpenTDB 🎓"
-        icon={BookCheck}
+        icon={<BrainCircuit size={20} className="text-pink-500" />}
         onClick={() => navigate("/")}
       />
 

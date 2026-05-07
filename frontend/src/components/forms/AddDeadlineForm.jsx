@@ -1,10 +1,10 @@
 import { Plus } from "lucide-react";
 import React, { useState } from "react";
-import FloatingLabelInput from "../FloatingLabelInput";
-import SelectBox from "../SelectBox";
+import FloatingLabelInput from "../ui/FloatingLabelInput";
+import SelectBox from "../ui/SelectBox";
 import { DEADLINE_TYPES } from "../../utils/constants/deadline.config";
 
-const AddDeadlineForm = ({ onAdd, loading }) => {
+const AddDeadlineForm = ({ onAdd, loading, isDark }) => {
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [subject, setSubject] = useState("");
@@ -44,7 +44,9 @@ const AddDeadlineForm = ({ onAdd, loading }) => {
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 mb-4 overflow-hidden">
+    <div
+      className={`${isDark ? "bg-slate-800 border-slate-700" : "bg-white border-slate-100"} rounded-2xl border  mb-4 overflow-hidden`}
+    >
       <div className="flex items-center gap-3 px-4 py-3">
         <Plus size={16} className="text-slate-400 shrink-0" />
         <input
@@ -57,7 +59,7 @@ const AddDeadlineForm = ({ onAdd, loading }) => {
           }}
           onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
           onFocus={() => setOpen(true)}
-          className="flex-1 text-sm text-slate-700 placeholder:text-slate-400 outline-none bg-transparent"
+          className={`flex-1 text-sm ${isDark ? "text-slate-100" : "text-slate-700"} outline-none bg-transparent`}
         />
         {title && (
           <button
@@ -74,6 +76,7 @@ const AddDeadlineForm = ({ onAdd, loading }) => {
         <div className="px-4 pb-4 border-t border-slate-100 pt-3 space-y-3 animate-[fadeSlideIn_0.2s_ease]">
           <div className="grid grid-cols-2 gap-3">
             <FloatingLabelInput
+              isDark={isDark}
               type="text"
               label="Subject (optional)"
               value={subject}
@@ -84,6 +87,7 @@ const AddDeadlineForm = ({ onAdd, loading }) => {
                 Type
               </div>
               <SelectBox
+                isDark={isDark}
                 options={DEADLINE_TYPES}
                 value={type}
                 onChange={setType}
@@ -93,12 +97,14 @@ const AddDeadlineForm = ({ onAdd, loading }) => {
 
           <div className="grid grid-cols-2 gap-3">
             <FloatingLabelInput
+              isDark={isDark}
               type="date"
               label="Due date"
               value={dueDate}
               onChange={setDueDate}
             />
             <FloatingLabelInput
+              isDark={isDark}
               type="time"
               label="Due time"
               value={dueTime}
@@ -107,6 +113,7 @@ const AddDeadlineForm = ({ onAdd, loading }) => {
           </div>
 
           <FloatingLabelInput
+            isDark={isDark}
             type="text"
             label="Notes (optional)"
             value={notes}
@@ -122,7 +129,7 @@ const AddDeadlineForm = ({ onAdd, loading }) => {
                 setTitle("");
                 setError("");
               }}
-              className="px-3 py-1.5 rounded-lg border border-slate-200 text-slate-500 text-xs font-medium hover:bg-slate-50 transition-colors cursor-pointer"
+              className={`px-3 py-1.5 rounded-lg border ${isDark ? "border-slate-700 text-slate-200" : "border-slate-200 text-slate-600"}  text-xs font-medium  transition-colors cursor-pointer`}
             >
               Cancel
             </button>
