@@ -29,7 +29,7 @@ const CatCursor = ({ enabled }) => {
   const [frame, setFrame] = useState(0);
   const [flipped, setFlipped] = useState(false);
   const [mode, setMode] = useState("walk");
-  const [isMobile] = useState(true);
+  const [isMobile] = useState(isMobileDevice);
 
   const cursorRef = useRef({ x: -200, y: -200 });
   const catRef = useRef({ x: -200, y: -200 });
