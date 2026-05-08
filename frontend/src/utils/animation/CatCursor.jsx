@@ -24,15 +24,16 @@ const ROAM_INTERVAL = 3000;
 
 const isMobileDevice = () => window.matchMedia("(pointer: coarse)").matches;
 
-const CatCursor = ({ enabled }) => {
-  const [catPos, setCatPos] = useState({ x: -200, y: -200 });
+const CatCursor = ({ enabled, startPos }) => {
+  const initial = startPos ?? { x: -200, y: -200 };
+  const [catPos, setCatPos] = useState(initial);
   const [frame, setFrame] = useState(0);
   const [flipped, setFlipped] = useState(false);
   const [mode, setMode] = useState("walk");
   const [isMobile] = useState(isMobileDevice);
 
-  const cursorRef = useRef({ x: -200, y: -200 });
-  const catRef = useRef({ x: -200, y: -200 });
+  const cursorRef = useRef(initial);
+  const catRef = useRef(initial);
   const rafRef = useRef(null);
   const modeRef = useRef("walk");
 
@@ -68,6 +69,13 @@ const CatCursor = ({ enabled }) => {
 
     rafRef.current = requestAnimationFrame(animate);
   }, []);
+  useEffect(() => {
+    if (enabled && startPos) {
+      setCatPos(startPos);
+      catRef.current = startPos;
+      cursorRef.current = startPos;
+    }
+  }, [enabled, startPos]);
 
   useEffect(() => {
     if (!enabled) return;
