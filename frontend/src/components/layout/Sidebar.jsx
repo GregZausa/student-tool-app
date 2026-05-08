@@ -58,7 +58,7 @@ const Sidebar = ({ onClose }) => {
             <div
               className={`text-sm font-bold ${isDark ? "text-slate-50" : "text-slate-800"} leading-tight`}
             >
-              StudyTools
+              Stud IQ
             </div>
             <div className="text-[10px] text-slate-400">PH Student App</div>
           </div>
