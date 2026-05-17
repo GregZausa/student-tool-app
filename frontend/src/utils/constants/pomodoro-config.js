@@ -4,7 +4,7 @@ export const MODES = {
     color: "text-indigo-500",
     ring: "ring-indigo-200",
     bg: "bg-indigo-50",
-    border: "border-indigo-200",
+    border: "border-indigo-400",
     defaultMins: 25,
   },
   shortBreak: {
@@ -12,7 +12,7 @@ export const MODES = {
     color: "text-emerald-500",
     ring: "ring-emerald-200",
     bg: "bg-emerald-50",
-    border: "border-emerald-200",
+    border: "border-emerald-400",
     defaultMins: 5,
   },
   longBreak: {
@@ -20,7 +20,7 @@ export const MODES = {
     color: "text-sky-500",
     ring: "ring-sky-200",
     bg: "bg-sky-50",
-    border: "border-sky-200",
+    border: "border-sky-400",
     defaultMins: 15,
   },
 };

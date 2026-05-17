@@ -124,9 +124,12 @@ const GPACalculator = () => {
       />
 
       <div className="max-w-2xl mx-auto px-4 pb-16">
-        <div className="flex gap-1 bg-slate-100 rounded-xl p-1 mt-5 mb-4">
+        <div
+          className={`flex gap-1 ${isDark ? "bg-slate-700" : "bg-slate-100"} rounded-xl p-1 mt-5 mb-4`}
+        >
           {semesters.map((sem, i) => (
             <SemesterTab
+              isDark={isDark}
               key={i}
               label={sem.label}
               active={activeSem === i}
@@ -137,11 +140,13 @@ const GPACalculator = () => {
 
         <div className="grid grid-cols-3 gap-2.5 mb-5">
           <StatCard
+            isDark={isDark}
             label="Sem GWA"
             value={gwa !== null ? gwa.toFixed(2) : "—"}
             color="text-indigo-500"
           />
           <StatCard
+            isDark={isDark}
             label="Sem units"
             value={
               totalUnits > 0
@@ -153,6 +158,7 @@ const GPACalculator = () => {
             color="text-sky-500"
           />
           <StatCard
+            isDark={isDark}
             label="Cumulative GWA"
             value={cumGwa !== null ? cumGwa.toFixed(2) : "—"}
             color="text-emerald-500"
@@ -197,7 +203,9 @@ const GPACalculator = () => {
               {gwa !== null ? `${barWidth.toFixed(0)}%` : "—"}
             </span>
           </div>
-          <div className="h-2.5 bg-slate-200 rounded-full overflow-hidden">
+          <div
+            className={`h-2.5 ${isDark ? "bg-slate-800" : "bg-slate-50"} rounded-full overflow-hidden`}
+          >
             <div
               className={`h-full rounded-full transition-all duration-500 ${barColorClass}`}
               style={{ width: `${barWidth}%` }}
@@ -210,7 +218,9 @@ const GPACalculator = () => {
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl border border-slate-200 p-4 mb-3">
+        <div
+          className={`border ${isDark ? "bg-slate-800 border-slate-700" : " bg-slate-50 border-slate-100 "} rounded-2xl  p-4 mb-3`}
+        >
           <div className="grid grid-cols-[2fr_90px_175px_36px] gap-2 mb-2">
             {["Subject / Course", "Units", "Grade", ""].map((h, i) => (
               <div
@@ -223,13 +233,14 @@ const GPACalculator = () => {
           </div>
 
           {currentRows.length === 0 ? (
-            <div className="text-center py-8 text-slate-300">
+            <div className="text-center py-8 text-slate-400">
               <div className="text-3xl mb-2">📚</div>
               <div className="text-sm">No subjects yet. Add one below!</div>
             </div>
           ) : (
             currentRows.map((row, i) => (
               <SubjectRow
+                isDark={isDark}
                 key={row.id}
                 row={row}
                 index={i}
@@ -260,19 +271,23 @@ const GPACalculator = () => {
 
         <AdSenseAd />
 
-        <div className="bg-white rounded-2xl border border-slate-200 p-4 mb-4">
-          <h3 className="text-sm font-semibold text-slate-800 mb-3">
+        <div
+          className={`border ${isDark ? "bg-slate-800 border-slate-700" : "bg-slate-50 border-slate-100"} rounded-2xl  p-4 mb-4`}
+        >
+          <h3
+            className={`text-sm font-semibold ${isDark ? "text-slate-50" : "text-slate-800"} mb-3`}
+          >
             📊 PH grading scale reference
           </h3>
           <div className="overflow-x-auto">
             <table className="w-full text-sm border-collapse">
               <thead>
-                <tr className="bg-slate-50">
+                <tr className={`${isDark ? "bg-slate-800" : "bg-slate-50"}`}>
                   {["Grade", "Description", "% Equivalent", "Remarks"].map(
                     (h) => (
                       <th
                         key={h}
-                        className="px-2.5 py-2 text-left text-[10px] text-slate-500 font-semibold uppercase tracking-wider border-b border-slate-200"
+                        className={`px-2.5 py-2 text-left text-[10px] text-slate-500 font-semibold uppercase tracking-wider border-b ${isDark ? "border-slate-700" : "border-slate-100"}`}
                       >
                         {h}
                       </th>
@@ -284,7 +299,15 @@ const GPACalculator = () => {
                 {gradeTableRows.map(([g, desc, pct, rmk], i) => (
                   <tr
                     key={g}
-                    className={i % 2 === 0 ? "bg-white" : "bg-slate-50/50"}
+                    className={
+                      i % 2 === 0
+                        ? isDark
+                          ? "bg-slate-800"
+                          : "bg-slate-50"
+                        : isDark
+                          ? "bg-slate-800/50"
+                          : "bg-slate-50/50"
+                    }
                   >
                     <td
                       className={`px-2.5 py-2 font-mono font-semibold ${
@@ -297,9 +320,13 @@ const GPACalculator = () => {
                     >
                       {g}
                     </td>
-                    <td className="px-2.5 py-2 text-slate-700">{desc}</td>
-                    <td className="px-2.5 py-2 text-slate-500">{pct}</td>
-                    <td className="px-2.5 py-2 text-slate-500">{rmk}</td>
+                    <td
+                      className={`px-2.5 py-2 ${isDark ? "text-slate-100" : "text-slate-700"}`}
+                    >
+                      {desc}
+                    </td>
+                    <td className="px-2.5 py-2 text-slate-400">{pct}</td>
+                    <td className="px-2.5 py-2 text-slate-400">{rmk}</td>
                   </tr>
                 ))}
               </tbody>
@@ -307,6 +334,7 @@ const GPACalculator = () => {
           </div>
         </div>
         <TipBox
+          isDark={isDark}
           title="Tips para mapabuti ang GWA mo"
           icon={Lightbulb}
           tips={[
@@ -334,10 +362,14 @@ const GPACalculator = () => {
         />
 
         {showTip && (
-          <div className="bg-blue-50 rounded-2xl border border-blue-200 p-4 mb-4 flex items-center gap-3 animate-[fadeSlideIn_0.4s_ease]">
+          <div
+            className={`border ${isDark ? "bg-slate-800 border-blue-700" : "bg-blue-50 border-blue-100"} rounded-2xl  p-4 mb-4 flex items-center gap-3 animate-[fadeSlideIn_0.4s_ease]`}
+          >
             <span className="text-xl">🔗</span>
             <div className="flex-1">
-              <div className="text-sm font-semibold text-blue-800">
+              <div
+                className={`text-sm font-semibold  ${isDark ? "text-blue-400" : "text-blue-800"}`}
+              >
                 Ibahagi ang iyong result!
               </div>
               <div className="text-xs text-blue-500">
