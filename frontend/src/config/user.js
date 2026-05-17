@@ -1,37 +1,62 @@
 import { supabase } from "./supabase";
 
-export const getStoredUser = () => {
-  return localStorage.getItem("ph_study_user_id");
-};
-
-export const getStoredUserName = () => {
-  return localStorage.getItem("ph_study_user_name");
-};
-
-export const createUser = async (name) => {
+export const getUserByAuthId = async (authId) => {
   const { data, error } = await supabase
     .from("users")
-    .insert({ name: name || "Anonymous" })
-    .select("user_id, name")
+    .select("*")
+    .eq("auth_id", authId)
     .single();
 
-  if (error || !data) return null;
-
-  localStorage.setItem("ph_study_user_id", data.user_id);
-  localStorage.setItem("ph_study_user_name", data.name);
-  return data.user_id;
+  if (error) return null;
+  return data;
 };
 
-export const updateUserName = async (userId, name) => {
+export const createUserRow = async (authId, name = "Anonymous") => {
+  const { data, error } = await supabase
+    .from("users")
+    .insert({ auth_id: authId, name })
+    .select()
+    .single();
+
+  if (error) {
+    console.error("Failed to create user row:", error);
+    return null;
+  }
+  return data;
+};
+
+export const updateUserName = async (authId, name) => {
   const { data, error } = await supabase
     .from("users")
     .update({ name })
-    .eq("user_id", userId)
-    .select("user_id, name")
+    .eq("auth_id", authId)
+    .select()
     .single();
 
-  if (error || !data) return null;
-
-  localStorage.setItem("ph_study_user_name", data.name);
+  if (error) {
+    console.error("Failed to update user name:", error);
+    return null;
+  }
   return data;
+};
+
+export const signUp = async (email, password) => {
+  const { data, error } = await supabase.auth.signUp({ email, password });
+  if (error) return { error };
+  return { data };
+};
+
+export const signIn = async (email, password) => {
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
+  if (error) return { error };
+  return { data };
+};
+
+// ── Sign out ───────────────────────────────────────────────────────────────
+export const signOut = async () => {
+  const { error } = await supabase.auth.signOut();
+  return { error };
 };
