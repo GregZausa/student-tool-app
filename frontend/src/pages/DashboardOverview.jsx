@@ -116,6 +116,13 @@ const DashboardOverview = () => {
       desc: "Test your knowledge",
       color: "bg-pink-50 text-pink-500",
     },
+    {
+      to: "/dashboard/decks",
+      icon: BrainCircuit,
+      label: "My Decks",
+      desc: "Placeholder text",
+      color: "bg-pink-50 text-pink-500",
+    },
   ];
 
   return (

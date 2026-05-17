@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
+import { useTheme } from "../../context/ThemeContext";
 
 const FloatingLabelInput = ({
-  isDark,
   type = "text",
   value,
   onChange,
@@ -17,6 +17,7 @@ const FloatingLabelInput = ({
 }) => {
   const [isFocused, setIsFocused] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const { isDark } = useTheme();
 
   const inputType =
     type === "password" ? (showPassword ? "text" : "password") : type;

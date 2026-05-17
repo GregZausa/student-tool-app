@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Check, ChevronsUpDown, Search } from "lucide-react";
+import { useTheme } from "../../context/ThemeContext";
 
 const SelectBox = ({
   options = [],
@@ -11,12 +12,12 @@ const SelectBox = ({
   className = "",
   required = false,
   searchable = false,
-  isDark,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
   const containerRef = useRef(null);
   const searchRef = useRef(null);
+  const { isDark } = useTheme();
 
   const selectedOption = options.find((opt) => opt.value === value);
 

@@ -5,19 +5,19 @@ import { Menu, X } from "lucide-react";
 import { useUser } from "../context/UserContext";
 import InfoSetUpModal from "../components/modal/InfoSetUpModal";
 import { useTheme } from "../context/ThemeContext";
+import studIQLogo from "../components/res/logo.png";
 
 const DashboardLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { name, userId, isReady } = useUser();
+  const { name, userId } = useUser();
+  name.charAt(0);
   const { isDark } = useTheme();
-
-  if (!isReady) return null;
 
   return (
     <div
       className={`min-h-screen ${isDark ? "bg-slate-800" : "bg-slate-50"} flex font-sans `}
     >
-      {isReady && !userId && <InfoSetUpModal />}
+      {!userId && <InfoSetUpModal />}
       <div className="hidden lg:flex lg:flex-col lg:w-60 lg:fixed lg:inset-y-0 lg:z-30">
         <Sidebar />
       </div>
@@ -39,8 +39,8 @@ const DashboardLayout = () => {
           className={`lg:hidden flex items-center justify-between px-4 py-3 ${isDark ? "bg-slate-800 border-slate-800" : "bg-white border-b border-slate-200 "}sticky top-0 z-20`}
         >
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 bg-indigo-500 rounded-lg flex items-center justify-center text-white font-bold text-xs">
-              S
+            <div className="w-8 h-8 bg-slate-800 border border-slate-700 rounded-2xl flex items-center justify-center text-2xl font-bold mx-auto mb-5">
+              <img src={studIQLogo} alt="" />
             </div>
             <span
               className={`text-sm font-bold ${isDark ? "text-slate-50" : "text-slate-800"}`}
