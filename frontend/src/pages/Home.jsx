@@ -1,21 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import AdSenseAd from "../utils/AdSenseAd";
-import { useUser } from "../context/UserContext";
-import InfoSetUpModal from "../components/modal/InfoSetUpModal";
-import useLiveUsers from "../hooks/useLiveUsers";
+import Footer from "./components/layout/Footer";
 
 const Home = () => {
-
   const navigate = useNavigate();
-  const liveUsers = useLiveUsers();
 
   const messages = [
-    "students checking their GPA",
-    "students using the Pomodoro timer",
-    "students organizing tasks",
-    "students generating quizzes",
+    "students improving their study habits",
+    "students using Pomodoro focus sessions",
+    "students organizing their workload",
+    "students preparing for exams smarter",
   ];
 
   const [index, setIndex] = useState(0);
@@ -28,155 +23,176 @@ const Home = () => {
     return () => clearInterval(interval);
   }, []);
 
-
-
   return (
     <div className="min-h-screen bg-linear-to-br from-slate-950 via-black to-slate-900 text-white">
       <div className="max-w-5xl mx-auto px-4 py-20 text-center">
-        {/* 🔥 HOOK */}
+        {/* HERO */}
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           className="text-5xl md:text-6xl font-bold leading-tight"
         >
-          Still guessing your grades?
+          Studying doesn’t have to feel overwhelming.
         </motion.h1>
 
-        <p className="mt-4 text-slate-400 text-lg">
-          Struggling to stay focused, track tasks, or prepare for exams?
+        <p className="mt-6 text-slate-300 text-lg max-w-2xl mx-auto">
+          Most students struggle not because they lack intelligence, but because
+          they use ineffective study methods that reduce retention and increase
+          stress.
         </p>
 
-        {/* 💡 SOLUTION */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.3 }}
-          className="mt-8 text-xl text-indigo-400 font-semibold"
-        >
-          This fixes all of that.
-        </motion.p>
-
-        <p className="mt-4 text-slate-300 max-w-2xl mx-auto">
-          Student Tools Hub gives you everything you need to manage your
-          academics—so you can stop stressing and start performing.
+        <p className="mt-6 text-indigo-400 font-semibold text-lg">
+          Stud IQ helps you study smarter using structured learning systems
+          based on cognitive science.
         </p>
-        {/*<p className="mt-4 text-sm text-green-400">
-          ● {liveUsers} students using tools right now
-
-          for future
-        </p> */}
 
         <p className="mt-4 text-sm text-green-400">
-          ●{liveUsers} {messages[index]} right now
+          ● {messages[index]} right now
         </p>
-        {/* 🚀 CTA */}
+
+        {/* CTA */}
         <button
           onClick={() => navigate("/dashboard")}
           className="mt-10 bg-indigo-500 hover:bg-indigo-600 px-10 py-4 rounded-xl font-semibold text-lg transition"
         >
-          Let’s Start →
+          Start Studying Smarter →
         </button>
 
-        {/* 📊 PROBLEM → RESULT */}
-        <div className="grid md:grid-cols-3 gap-6 mt-20 text-left">
-          {[
-            {
-              before: "Manual GPA computation",
-              after: "Instant GPA results",
-            },
-            {
-              before: "Easily distracted",
-              after: "Focused study sessions",
-            },
-            {
-              before: "Messy tasks & deadlines",
-              after: "Organized workflow",
-            },
-          ].map((item, i) => (
-            <motion.div
-              key={i}
-              whileInView={{ opacity: 1, y: 0 }}
-              initial={{ opacity: 0, y: 30 }}
-              className="bg-white/5 border border-white/10 rounded-xl p-6"
-            >
-              <p className="text-red-400 text-sm mb-2">✗ {item.before}</p>
-              <p className="text-green-400 font-semibold">✓ {item.after}</p>
-            </motion.div>
-          ))}
+        {/* WHY SECTION (CORE ADSENSE FIX) */}
+        <div className="mt-24 text-left max-w-3xl mx-auto">
+          <h2 className="text-3xl font-bold text-center mb-6">
+            Why students struggle with studying
+          </h2>
+
+          <p className="text-slate-300 leading-relaxed">
+            Many students rely on passive learning techniques such as rereading
+            notes, highlighting textbooks, or cramming before exams. While these
+            methods feel productive, they do not create strong long-term memory
+            retention.
+          </p>
+
+          <p className="text-slate-300 mt-4 leading-relaxed">
+            Research in cognitive science shows that active recall, spaced
+            repetition, and structured focus sessions significantly improve
+            learning outcomes.
+          </p>
+
+          <p className="text-slate-300 mt-4 leading-relaxed">
+            Stud IQ is built around these principles to help students study more
+            efficiently, reduce stress, and improve academic performance.
+          </p>
         </div>
 
-        {/* 🧩 TOOLS EXPLANATION */}
+        {/* TOOLS SECTION */}
         <div className="mt-24 text-left">
           <h2 className="text-3xl font-bold text-center mb-10">
-            Tools that actually help you
+            Learning tools inside Stud IQ
           </h2>
 
           <div className="space-y-6">
             {[
               {
                 title: "📊 GPA Calculator",
-                desc: "Quickly compute your grades and know exactly where you stand—no more guessing or manual math.",
+                desc: "Helps students instantly understand academic performance and track improvement over time.",
               },
               {
                 title: "⏱ Pomodoro Timer",
-                desc: "Stay focused using proven study intervals that help you avoid burnout.",
+                desc: "Improves focus using structured study intervals and prevents burnout.",
               },
               {
                 title: "❓ Quiz Generator",
-                desc: "Test your knowledge instantly on any topic—perfect for exam prep.",
+                desc: "Strengthens memory through active recall practice and self-testing.",
               },
               {
-                title: "📝 To-do List",
-                desc: "Keep track of assignments and deadlines so nothing slips through.",
+                title: "📝 Task Manager",
+                desc: "Organizes assignments and deadlines for better academic planning.",
+              },
+              {
+                title: "📚 Notes System",
+                desc: "Helps students structure learning materials for easier review and retention.",
               },
             ].map((tool, i) => (
-              <motion.div
+              <div
                 key={i}
-                whileInView={{ opacity: 1 }}
-                initial={{ opacity: 0 }}
                 className="bg-white/5 border border-white/10 p-6 rounded-xl"
               >
                 <h3 className="font-semibold text-lg">{tool.title}</h3>
-                <p className="text-slate-400 mt-2 text-sm">{tool.desc}</p>
-              </motion.div>
+                <p className="text-slate-300 mt-2 text-sm">{tool.desc}</p>
+              </div>
             ))}
           </div>
         </div>
 
-        {/* 🎯 OUTCOME SECTION */}
+        {/* BLOG HUB (CRITICAL FOR ADSENSE) */}
         <div className="mt-24 text-center">
           <h2 className="text-3xl font-bold mb-6">
-            What changes when you use this?
+            Study Guides & Learning Articles
           </h2>
 
-          <div className="grid md:grid-cols-3 gap-6 text-sm">
-            <div>📈 Better academic performance</div>
-            <div>🧠 Less stress and confusion</div>
-            <div>⏳ More time saved daily</div>
+          <p className="text-slate-400 max-w-2xl mx-auto">
+            Learn proven study techniques, productivity systems, and academic
+            strategies to improve performance.
+          </p>
+
+          <div className="grid md:grid-cols-2 gap-4 mt-10 text-left">
+            {[
+              "Active Recall: The Most Effective Study Method",
+              "Why Rereading Notes Doesn’t Work",
+              "Pomodoro Technique Explained for Students",
+              "How to Stop Procrastinating",
+              "Best Study Habits for Students",
+              "How to Improve GPA Effectively",
+              "Spaced Repetition Explained Simply",
+              "How to Study Without Burnout",
+            ].map((item, i) => (
+              <div
+                key={i}
+                className="bg-white/5 border border-white/10 p-4 rounded-xl"
+              >
+                <p className="text-indigo-300 font-medium">📘 {item}</p>
+                <p className="text-slate-400 text-sm mt-2">
+                  Read full guide in Stud IQ blog.
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <button
+            onClick={() => navigate("/blog")}
+            className="mt-10 bg-indigo-500 px-8 py-3 rounded-lg"
+          >
+            Go to Blog →
+          </button>
+        </div>
+
+        {/* OUTCOME */}
+        <div className="mt-24 text-center">
+          <h2 className="text-3xl font-bold mb-6">
+            What improves when you use Stud IQ?
+          </h2>
+
+          <div className="grid md:grid-cols-3 gap-6 text-slate-300 text-sm">
+            <div>📈 Higher academic performance</div>
+            <div>🧠 Better memory retention</div>
+            <div>⏳ More efficient study time</div>
           </div>
         </div>
 
-        {/* 💬 FINAL CTA */}
+        {/* FINAL CTA */}
         <div className="mt-24">
           <h2 className="text-2xl font-semibold mb-4">
-            You don’t need more effort—you need better tools.
+            You don’t need more effort — you need better systems.
           </h2>
 
           <button
             onClick={() => navigate("/dashboard")}
-            className="bg-indigo-500 hover:bg-indigo-600 px-8 py-3 rounded-lg transition"
+            className="bg-indigo-500 hover:bg-indigo-600 px-8 py-3 rounded-lg"
           >
             Start Now →
           </button>
         </div>
-
-        {/* 💰 ADS */}
-        <div className="max-w-xl mx-auto mt-20 opacity-80">
-          <AdSenseAd />
-        </div>
       </div>
-
-
+      <Footer />
     </div>
   );
 };
