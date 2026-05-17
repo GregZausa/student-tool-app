@@ -1,5 +1,6 @@
 import React from "react";
 import { Loader2 } from "lucide-react";
+import { useTheme } from "../../context/ThemeContext";
 
 const Button = ({
   label,
@@ -13,6 +14,7 @@ const Button = ({
   size = "md",
 }) => {
   const isDisabled = disabled || loading;
+  const { isDark } = useTheme();
 
   const variants = {
     primary:
@@ -61,7 +63,7 @@ const Button = ({
         />
       )}
       {Icon && !loading && (
-        <span className="shrink-0 flex items-center">{<Icon size={20}/>}</span>
+        <span className="shrink-0 flex items-center">{<Icon size={20} />}</span>
       )}
 
       <span>{label}</span>

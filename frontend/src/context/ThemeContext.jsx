@@ -3,6 +3,16 @@ import { createContext, useContext, useEffect, useState } from "react";
 const ThemeContext = createContext(null);
 
 export const ThemeProvider = ({ children }) => {
+  useEffect(() => {
+    const stored = localStorage.getItem("ph_study_theme");
+
+    if (!stored) {
+      const h = new Date().getHours();
+
+      localStorage.setItem("ph_study_theme", h < 12 ? "light" : "dark");
+    }
+  }, []);
+
   const [isDark, setIsDark] = useState(() => {
     const stored = localStorage.getItem("ph_study_theme");
     if (stored) return stored === "dark";

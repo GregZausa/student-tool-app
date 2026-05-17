@@ -1,14 +1,15 @@
 import { Search } from "lucide-react";
 import React from "react";
+import { useTheme } from "../../context/ThemeContext";
 
 const SearchBar = ({
-  isDark,
   onChange,
   value,
   onClick,
   buttonIcon: ButtonIcon,
   placeholder,
 }) => {
+  const { isDark } = useTheme();
   return (
     <div
       className={`flex items-center gap-2  border ${isDark ? "bg-slate-800 border-slate-700" : "bg-white border-slate-200"} rounded-xl px-3.5 py-2.5`}
