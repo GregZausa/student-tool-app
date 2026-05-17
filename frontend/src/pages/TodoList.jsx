@@ -129,7 +129,7 @@ const TodoList = () => {
         isDark={isDark}
         header="To-do List"
         subHeader="Track your tasks and assignments — synced automatically"
-        icon={<CheckSquare size={20} className="text-indigo-500"/>}
+        icon={<CheckSquare size={20} className="text-indigo-500" />}
       />
 
       <div className="max-w-2xl mx-auto px-4 pb-16">
@@ -148,7 +148,7 @@ const TodoList = () => {
             ].map(({ label, value, color }) => (
               <div
                 key={label}
-                className="bg-white rounded-2xl p-3.5 border border-slate-200 text-center"
+                className={` border ${isDark ? "bg-slate-800 border-slate-700" : "bg-slate-50 border-slate-100"} rounded-2xl p-3.5 text-center`}
               >
                 <div className="text-[10px] text-slate-400 font-semibold uppercase tracking-widest mb-1">
                   {label}
@@ -160,15 +160,19 @@ const TodoList = () => {
             ))}
           </div>
 
-          <AddTodoForm onAdd={handleAdd} loading={adding} />
+          <AddTodoForm onAdd={handleAdd} loading={adding} isDark={isDark} />
 
           <div className="mb-3">
             <button
               onClick={() => setShowFilter((v) => !v)}
               className={`flex items-center gap-2 px-3 py-2 rounded-xl border text-xs font-semibold transition-all cursor-pointer ${
                 activeFilters > 0
-                  ? "bg-indigo-50 border-indigo-200 text-indigo-600"
-                  : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"
+                  ? isDark
+                    ? "bg-slate-800 border-slate-700 text-slate-50"
+                    : "bg-slate-50 border-slate-100 text-slate-800"
+                  : isDark
+                    ? "bg-slate-800 border-slate-700 text-slate-50 hover:bg-slate-600"
+                    : "bg-white border-slate-100 text-slate-600 hover:bg-slate-50"
               }`}
             >
               <SlidersHorizontal size={13} />
@@ -181,7 +185,9 @@ const TodoList = () => {
             </button>
 
             {showFilter && (
-              <div className="bg-white rounded-2xl border border-slate-200 p-4 mt-2 animate-[fadeSlideIn_0.2s_ease]">
+              <div
+                className={`border ${isDark ? "bg-slate-800 border-slate-700" : "bg-slate-50 border-slate-100"} rounded-2xl p-4 mt-2 animate-[fadeSlideIn_0.2s_ease]`}
+              >
                 <div className="grid grid-cols-2 gap-3 mb-3">
                   <div>
                     <div className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider mb-1.5">
@@ -231,7 +237,7 @@ const TodoList = () => {
                       setFilterPriority("");
                       setFilterStatus("");
                     }}
-                    className="flex items-center gap-1.5 text-xs text-slate-800 hover:text-red-400 transition-colors cursor-pointer"
+                    className={`flex items-center gap-1.5 text-xs ${isDark ? "text-slate-50" : "text-slate-800"} hover:text-red-400 transition-colors cursor-pointer`}
                   >
                     <X size={12} /> Clear all filters
                   </button>
@@ -240,14 +246,16 @@ const TodoList = () => {
             )}
           </div>
 
-          <div className="bg-white rounded-2xl border border-slate-200 p-4 mb-4">
+          <div
+            className={`border ${isDark ? "bg-slate-800 border-slate-700" : "bg-slate-50 border-slate-100"} rounded-2xl  p-4 mb-4`}
+          >
             {fetching ? (
-              <div className="text-center py-8 text-slate-300">
+              <div className="text-center py-8 text-slate-400">
                 <div className="w-6 h-6 border-2 border-slate-200 border-t-indigo-500 rounded-full animate-spin mx-auto mb-2" />
                 <div className="text-sm">Loading your tasks...</div>
               </div>
             ) : filtered.length === 0 ? (
-              <div className="text-center py-10 text-slate-300">
+              <div className="text-center py-10 text-slate-400">
                 <Inbox size={32} className="mx-auto mb-2 opacity-50" />
                 <div className="text-sm font-medium">
                   {activeFilters > 0

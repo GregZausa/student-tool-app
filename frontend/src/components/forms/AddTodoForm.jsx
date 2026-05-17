@@ -3,7 +3,7 @@ import FloatingLabelInput from "../ui/FloatingLabelInput";
 import { PRIORITIES, PRIORITY_STYLES } from "../../utils/constants/todo-config";
 import { Plus } from "lucide-react";
 
-const AddTodoForm = ({ onAdd, loading }) => {
+const AddTodoForm = ({ onAdd, loading, isDark }) => {
   const [title, setTitle] = useState("");
   const [subject, setSubject] = useState("");
   const [dueDate, setDueDate] = useState("");
@@ -26,7 +26,9 @@ const AddTodoForm = ({ onAdd, loading }) => {
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 mb-4 overflow-hidden">
+    <div
+      className={`border ${isDark ? "bg-slate-800 border-slate-700" : "bg-slate-50 border-slate-100"} rounded-2xl   mb-4 overflow-hidden`}
+    >
       <div className="flex items-center gap-3 px-4 py-3">
         <Plus size={16} className="text-slate-400 shrink-0" />
         <input
@@ -39,7 +41,7 @@ const AddTodoForm = ({ onAdd, loading }) => {
           }}
           onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
           onFocus={() => setOpen(true)}
-          className="flex-1 text-sm text-slate-700 placeholder:text-slate-400 outline-none bg-transparent"
+          className={`flex-1 text-sm ${isDark ? "text-slate-100 bg-slate-800 " : "bg-slate-50 text-slate-700"} placeholder:text-slate-400 outline-none bg-transparent`}
         />
         {title && (
           <button

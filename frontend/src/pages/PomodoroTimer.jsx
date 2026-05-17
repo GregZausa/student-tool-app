@@ -312,15 +312,19 @@ const PomodoroTimer = () => {
       <div className="max-w-2xl mx-auto px-4 pb-16">
         <AdSenseAd />
 
-        <div className="flex gap-1 bg-slate-100 rounded-xl p-1 mt-5 mb-5">
+        <div
+          className={`flex gap-1 ${isDark ? "bg-slate-700" : "bg-slate-100"} rounded-xl p-1 mt-5 mb-5`}
+        >
           {Object.entries(MODES).map(([key, cfg]) => (
             <button
               key={key}
               onClick={() => handleModeSwitch(key)}
               className={`flex-1 py-2 px-3 rounded-lg text-xs font-semibold transition-all cursor-pointer whitespace-nowrap ${
                 mode === key
-                  ? "bg-white shadow-sm text-slate-800"
-                  : "text-slate-500 hover:text-slate-700"
+                  ? isDark
+                    ? "bg-slate-50 text-slate-700 shadow-sm"
+                    : "bg-slate-800 text-slate-100 shadow-sm"
+                  : "bg-transparent text-slate-400 hover:text-slate-700 hover:bg-white"
               }`}
             >
               {cfg.label}
@@ -329,7 +333,7 @@ const PomodoroTimer = () => {
         </div>
 
         <div
-          className={`bg-white rounded-2xl border ${MODES[mode].border} p-6 mb-4 flex flex-col items-center gap-5`}
+          className={`${isDark ? "bg-slate-800" : "bg-slate-50"} rounded-2xl border ${MODES[mode].border} p-6 mb-4 flex flex-col items-center gap-5`}
         >
           <div className="flex gap-1.5">
             {[...Array(4)].map((_, i) => (
@@ -350,9 +354,13 @@ const PomodoroTimer = () => {
           />
 
           {activeSubject && (
-            <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5">
+            <div
+              className={`flex items-center gap-2 border ${isDark ? "bg-slate-800 border-slate-700" : "bg-slate-50 border-slate-100"}  rounded-xl px-3 py-1.5`}
+            >
               <span className="text-xs text-slate-500">Studying:</span>
-              <span className="text-xs font-semibold text-slate-700">
+              <span
+                className={`text-xs font-semibold ${isDark ? "text-slate-100" : "text-slate-700"}`}
+              >
                 {activeSubject}
               </span>
             </div>
@@ -380,7 +388,9 @@ const PomodoroTimer = () => {
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl border border-slate-200 p-4 mb-4">
+        <div
+          className={`border ${isDark ? "bg-slate-800 border-slate-700" : "bg-slate-50 border-slate-100"} rounded-2xl  p-4 mb-4`}
+        >
           <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-3">
             Session setup
           </h3>
@@ -470,7 +480,7 @@ const PomodoroTimer = () => {
           ].map(({ label, value, color }) => (
             <div
               key={label}
-              className="bg-white rounded-2xl p-3.5 border border-slate-200 text-center"
+              className={`border ${isDark ? "bg-slate-800 border-slate-700" : "bg-slate-50 border-slate-100"} rounded-2xl p-3.5  text-center`}
             >
               <div className="text-[10px] text-slate-400 font-semibold uppercase tracking-widest mb-1.5">
                 {label}
@@ -482,13 +492,15 @@ const PomodoroTimer = () => {
           ))}
         </div>
 
-        <div className="bg-white rounded-2xl border border-slate-200 mb-4 overflow-hidden">
+        <div
+          className={`border ${isDark ? "bg-slate-800 border-slate-700" : "bg-white border-slate-100"} rounded-2xl  mb-4 overflow-hidden`}
+        >
           <button
             onClick={() => {
               setTempDurations(durations);
               setShowSettings((v) => !v);
             }}
-            className="w-full flex items-center justify-between px-4 py-3.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors cursor-pointer"
+            className={`w-full flex items-center justify-between px-4 py-3.5 text-sm font-semibold ${isDark ? "text-slate-100 hover-bg-slate-700" : "text-slate-700 hover:bg-slate-100"}  transition-colors cursor-pointer`}
           >
             <span className="flex items-center gap-2">
               ⚙️ Custom timer durations
@@ -539,9 +551,13 @@ const PomodoroTimer = () => {
 
         <AdSenseAd />
 
-        <div className="bg-white rounded-2xl border border-slate-200 p-4 mb-4">
+        <div
+          className={`border ${isDark ? "bg-slate-800 border-slate-700" : "bg-slate-50 border-slate-100"} rounded-2xl  p-4 mb-40`}
+        >
           <div className="flex items-center justify-between mb-3">
-            <h3 className="text-sm font-semibold text-slate-800">
+            <h3
+              className={`text-sm font-semibold  ${isDark ? "text-slate-50" : "text-slate-800"}`}
+            >
               📋 Session log
             </h3>
             {sessions.length > 0 && (
@@ -576,6 +592,7 @@ const PomodoroTimer = () => {
 
         <TipBox
           icon={Lightbulb}
+          isDark={isDark}
           title="Pomodoro tips para sa mga Pinoy students"
           tips={[
             <>
